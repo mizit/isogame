@@ -1,0 +1,10 @@
+///surface_clear(surf);
+var l_surf = argument0;
+var l_color = draw_get_colour();
+draw_set_color(c_black);
+draw_set_blend_mode(bm_subtract);
+surface_set_target(l_surf);
+draw_rectangle(0, 0, surface_get_width(l_surf), surface_get_height(l_surf), 0);
+surface_reset_target();
+draw_set_blend_mode(bm_normal);
+draw_set_colour(l_color);
