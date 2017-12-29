@@ -41,7 +41,8 @@ enum CURSOR_STATE{
     FREE = 0,
     STOCK = 1,
     NEW_LAYER = 2,
-    LAYER = 3
+    LAYER = 3,
+    GRID = 4
 }
 
 stock_height = 128;
@@ -64,6 +65,13 @@ layers_lb_y = 544;
 layers_width = 100;
 layers_height = 32;
 layers_select = 0;
+
+grid_x = 192;
+grid_y = 128;
+grid_size = 300;
+grid_cell_size = grid_size / TMAPSIZE;
+
+
 
 </string>
           </argument>
@@ -136,7 +144,11 @@ layers_lb_x + layers_width, layers_lb_y))
 {
     cursor_state = CURSOR_STATE.LAYER;
 }
-
+if (point_in_rectangle(mouse_x, mouse_y, grid_x, grid_y, 
+grid_x + grid_size, grid_y + grid_size))
+{
+    cursor_state = CURSOR_STATE.GRID;
+}
 </string>
           </argument>
         </arguments>
@@ -287,6 +299,25 @@ if (cursor_state == CURSOR_STATE.NEW_LAYER)
 draw_set_color(c_black);
 draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_height, "+New layer");
 
+for (var i = 0; i &lt; TMAPSIZE; i++)
+{
+    for (var j = 0; j &lt; TMAPSIZE; j++)
+    {
+        var cell = ds_grid_get(ds_list_find_value(layers_list[| layers_select], LAYER.GRID), i, j);
+        if (cell != noone)
+        {
+            draw_set_color(cell.color);
+        }
+        else
+        {
+            draw_set_color(c_gray);
+        }
+        draw_rectangle(grid_x + i * grid_cell_size, grid_y + j * grid_cell_size, grid_x + (i + 1) * grid_cell_size, grid_y + (j + 1) * grid_cell_size, 0);
+        draw_set_color(c_black);
+        draw_rectangle(grid_x + i * grid_cell_size, grid_y + j * grid_cell_size, grid_x + (i + 1) * grid_cell_size, grid_y + (j + 1) * grid_cell_size, 1);
+    }
+}
+//draw_rectangle(grid_x, grid_y, grid_x + grid_size, grid_y + grid_size, 0);
 
 draw_text(100, 100, cursor_state);
 </string>
