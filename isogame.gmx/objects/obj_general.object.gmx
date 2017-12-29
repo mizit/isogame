@@ -39,7 +39,9 @@ for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
 cursor_state = 0;
 enum CURSOR_STATE{
     FREE = 0,
-    STOCK = 1
+    STOCK = 1,
+    NEW_LAYER = 2,
+    LAYER = 3
 }
 
 stock_height = 128;
@@ -54,6 +56,14 @@ stock_sqr_size = 118;
 stock_offset = 0;
 stock_roll_step = 50;
 stock_select = noone;
+
+layers_list = ds_list_create();
+ds_list_add(layers_list, layer_cell_create("layer" + string(ds_list_size(layers_list))));
+layers_lb_x = 32;
+layers_lb_y = 544;
+layers_width = 100;
+layers_height = 32;
+layers_select = 0;
 
 </string>
           </argument>
@@ -79,6 +89,12 @@ stock_select = noone;
             <kind>1</kind>
             <string>ds_list_destroy(list_pos_obj);
 surface_free(stock_surf);
+for (var i = 0; i &lt; ds_list_size(layers_list); i++)
+{
+    ds_grid_destroy(ds_list_find_value(layers_list[| i], LAYER.GRID));
+    ds_list_destroy(layers_list[| i]);
+}
+ds_list_destroy(layers_list);
 </string>
           </argument>
         </arguments>
@@ -103,11 +119,23 @@ surface_free(stock_surf);
             <kind>1</kind>
             <string>cursor_state = CURSOR_STATE.FREE;
 if (point_in_rectangle(mouse_x, mouse_y, stock_x, stock_y, 
-stock_x + stock_width, stock_y + stock_height,))
+stock_x + stock_width, stock_y + stock_height))
 {
     cursor_state = CURSOR_STATE.STOCK;
 } 
-
+if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, 
+layers_lb_y - (1 + ds_list_size(layers_list)) * layers_height, 
+layers_lb_x + layers_width, 
+layers_lb_y - ds_list_size(layers_list) * layers_height))
+{
+    cursor_state = CURSOR_STATE.NEW_LAYER;
+}
+if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, 
+layers_lb_y - ds_list_size(layers_list) * layers_height, 
+layers_lb_x + layers_width, layers_lb_y))
+{
+    cursor_state = CURSOR_STATE.LAYER;
+}
 
 </string>
           </argument>
@@ -147,6 +175,29 @@ stock_x + stock_width, stock_y + stock_height,))
         if (mouse_check_button(mb_left))
         {
             stock_select = floor ((mouse_x - stock_x - stock_offset - stock_xoff) / (stock_sqr_size + stock_step));
+        }
+        break;
+    }
+    case CURSOR_STATE.NEW_LAYER:
+    {
+        if (mouse_check_button(mb_left))
+        {
+            ds_list_add(layers_list, layer_cell_create("layer" + string(ds_list_size(layers_list))));
+        }
+        break;
+    }
+    case CURSOR_STATE.LAYER:
+    {
+        for (var i = 0; i &lt; ds_list_size(layers_list); i++)
+        {
+            if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, layers_lb_y - (i + 1) * layers_height, 
+            layers_lb_x + layers_width, layers_lb_y - i * layers_height))
+            {
+                if (mouse_check_button_pressed(mb_left))
+                {
+                    layers_select = i;
+                }
+            }
         }
         break;
     }
@@ -204,6 +255,40 @@ else
 draw_set_color(c_black);
 draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 1);
 
+draw_set_halign(fa_center);
+draw_set_valign(fa_middle);
+for (var i = 0; i &lt; ds_list_size(layers_list); i++)
+{
+    if (cursor_state == CURSOR_STATE.LAYER)
+    {
+        if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, layers_lb_y - (i + 1) * layers_height, 
+        layers_lb_x + layers_width, layers_lb_y - i * layers_height))
+        {
+            draw_set_color(c_green);
+            draw_rectangle(layers_lb_x, layers_lb_y - i * layers_height, 
+        layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 0);
+        }
+    }
+    draw_set_color(c_black);
+    var cell = layers_list[| i];
+    draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_height, cell[| LAYER.NAME]);
+    if (layers_select == i)
+    {
+        draw_rectangle(layers_lb_x, layers_lb_y - i * layers_height, 
+        layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 1);
+    }
+}
+if (cursor_state == CURSOR_STATE.NEW_LAYER)
+{
+    draw_set_color(c_green);
+    draw_rectangle(layers_lb_x, layers_lb_y - i * layers_height, 
+        layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 0);
+}
+draw_set_color(c_black);
+draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_height, "+New layer");
+
+
+draw_text(100, 100, cursor_state);
 </string>
           </argument>
         </arguments>

@@ -17,6 +17,9 @@
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\surface_clear.gml</script>
+    <scripts name="layers">
+      <script>scripts\layer_cell_create.gml</script>
+    </scripts>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
