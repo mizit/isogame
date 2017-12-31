@@ -319,7 +319,82 @@ for (var i = 0; i &lt; TMAPSIZE; i++)
 }
 //draw_rectangle(grid_x, grid_y, grid_x + grid_size, grid_y + grid_size, 0);
 
-draw_text(100, 100, cursor_state);
+if (cursor_state == CURSOR_STATE.GRID)
+{
+    var l_gx, l_gy;
+    l_gx = floor((mouse_x - grid_x) / grid_cell_size);
+    l_gy = floor((mouse_y - grid_y) / grid_cell_size);
+    l_gz = layers_select;
+    if (stock_select != noone)
+    {
+        ///Drawing potential objects
+        var test = 1;
+        for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
+        {  
+            for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
+            {
+                for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
+                {
+                    if (!grid_is_cell_free(l_gx + i, l_gy + j, l_gz + k))
+                    {
+                        test = 0;
+                    }
+                }
+            }
+        }
+        if (test)
+        {
+            draw_set_alpha(0.5);
+            draw_set_color(list_pos_obj[| stock_select].color);
+            draw_rectangle(grid_x + l_gx * grid_cell_size, grid_y + l_gy * grid_cell_size,
+            grid_x + (l_gx + list_pos_obj[| stock_select].length) * grid_cell_size, 
+            grid_y + (l_gy + list_pos_obj[| stock_select].width) * grid_cell_size, 0);
+            draw_set_alpha(1);
+            ///Setting objects
+            if (mouse_check_button_pressed(mb_left))
+            {
+                var tmp = instance_create(-1000, -1000, list_pos_obj[| stock_select].object_index);
+                tmp.gx = l_gx;
+                tmp.gy = l_gy;
+                tmp.gz = l_gz;
+                for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
+                {  
+                    for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
+                    {
+                        for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
+                        {
+                           var l_layer = layers_list[| l_gz + k];
+                           var l_grid = l_layer[| LAYER.GRID];
+                           l_grid[# l_gx + i, l_gy + j] = tmp;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    ///deleting objects
+    if (mouse_check_button(mb_right))
+    {
+        var tmp = grid_cell(l_gx, l_gy, l_gz);
+        if (tmp != noone)
+        {
+            for (var i = 0; i &lt; tmp.length; i++)
+            {  
+                for (var j = 0; j &lt; tmp.width; j++)
+                {
+                    for (var k = 0; k &lt; tmp.height; k++)
+                    {
+                        var l_layer = layers_list[| tmp.gz + k];
+                        var l_grid = l_layer[| LAYER.GRID];
+                        l_grid[# tmp.gx + i, tmp.gy + j] = noone;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//draw_text(100, 100, cursor_state);
 </string>
           </argument>
         </arguments>

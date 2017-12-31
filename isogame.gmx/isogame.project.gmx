@@ -20,6 +20,8 @@
     <scripts name="layers">
       <script>scripts\layer_cell_create.gml</script>
     </scripts>
+    <script>scripts\grid_is_cell_free.gml</script>
+    <script>scripts\grid_cell.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
