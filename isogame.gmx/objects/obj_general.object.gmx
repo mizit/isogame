@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>list_pos_obj = ds_list_create();    //list of possible objects
+list_set_obj = ds_list_create();    //list of set objects
 
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
@@ -33,7 +34,10 @@ ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sq
 
 for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
 {
-    instance_create(-1000, -1000, list_pos_obj[| i]);
+    var tmp = instance_create(-1000, -1000, list_pos_obj[| i]);
+    tmp.gx = noone;
+    tmp.gy = noone;
+    tmp.gz = noone;
 }
 
 cursor_state = 0;
@@ -71,8 +75,11 @@ grid_y = 128;
 grid_size = 300;
 grid_cell_size = grid_size / TMAPSIZE;
 
-
-
+d3_x = 736;
+d3_y = 352;
+d3_size = 300;
+d3_cell_size = grid_size / TMAPSIZE;
+d3_mult = d3_cell_size / TCELLSIZE;
 </string>
           </argument>
         </arguments>
@@ -103,6 +110,7 @@ for (var i = 0; i &lt; ds_list_size(layers_list); i++)
     ds_list_destroy(layers_list[| i]);
 }
 ds_list_destroy(layers_list);
+ds_list_destroy(list_set_obj);
 </string>
           </argument>
         </arguments>
@@ -224,7 +232,7 @@ for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
     var mult = min(stock_sqr_size / obj.sprite_width, stock_sqr_size / obj.sprite_height);
     //draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
     draw_sprite_ext(obj.sprite_index, -1, d_pos + obj.sprite_xoffset * mult + (stock_sqr_size - obj.sprite_width * mult) / 2, 
-    stock_yoff + stock_sqr_size, mult, mult, 0, c_white, 1);
+    stock_yoff + obj.sprite_yoffset * mult + (stock_sqr_size - obj.sprite_height * mult) / 2, mult, mult, 0, c_white, 1);
     if (stock_select == i)
     {
         draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
@@ -366,6 +374,8 @@ if (cursor_state == CURSOR_STATE.GRID)
                            var l_layer = layers_list[| l_gz + k];
                            var l_grid = l_layer[| LAYER.GRID];
                            l_grid[# l_gx + i, l_gy + j] = tmp;
+                           ds_list_add(list_set_obj, tmp);
+                           ds_list_d3_sort(list_set_obj);
                         }
                     }
                 }
@@ -387,14 +397,60 @@ if (cursor_state == CURSOR_STATE.GRID)
                         var l_layer = layers_list[| tmp.gz + k];
                         var l_grid = l_layer[| LAYER.GRID];
                         l_grid[# tmp.gx + i, tmp.gy + j] = noone;
+                        ds_list_delete_value(list_set_obj, tmp);
                     }
                 }
             }
         }
     }
 }
+///draw 3d substrate
+for (var i = 0; i &lt; TMAPSIZE; i++)
+{
+    for (var j = 0; j &lt; TMAPSIZE; j++)
+    {
+        draw_set_color(c_gray);
+        draw_primitive_begin(pr_trianglefan);
+        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+        
+        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        
+        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        
+        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+        draw_primitive_end();
+        draw_set_color(c_black);
+        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT,
+        d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT,
+        d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT,
+        d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT,
+        d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
+        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+    }
+}
 
-//draw_text(100, 100, cursor_state);
+for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
+{
+    var obj = list_set_obj[| i];
+    draw_sprite_ext(obj.sprite_index, -1, d3_x + 
+    lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
+    d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
+    d3_mult, d3_mult, 0, c_white, 1);
+}
 </string>
           </argument>
         </arguments>
