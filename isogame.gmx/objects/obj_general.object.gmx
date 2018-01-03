@@ -29,8 +29,8 @@
 list_set_obj = ds_list_create();    //list of set objects
 
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
-ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
-ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
+//ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
+//ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 
 for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
 {
@@ -451,6 +451,52 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
     d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
     d3_mult, d3_mult, 0, c_white, 1);
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="83">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>tsave("test");
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="76">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>tload("test");
 </string>
           </argument>
         </arguments>

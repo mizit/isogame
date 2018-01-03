@@ -24,6 +24,8 @@
     <script>scripts\grid_cell.gml</script>
     <script>scripts\ds_list_delete_value.gml</script>
     <script>scripts\ds_list_d3_sort.gml</script>
+    <script>scripts\tsave.gml</script>
+    <script>scripts\tload.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
