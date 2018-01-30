@@ -10,17 +10,21 @@
   <persistent>0</persistent>
   <colour>12632256</colour>
   <showcolour>-1</showcolour>
-  <code>globalvar SIZE;
+  <code>globalvar SIZE;         //don't use now
 SIZE = 42;
-globalvar ASPECT;
+globalvar ASPECT;       //how we transform height for imitation 3D
 ASPECT = 0.33;
-globalvar TMAPSIZE;
+globalvar TMAPSIZE;     //how many squares on field
 TMAPSIZE = 15;
-room_goto_next();
-globalvar TCELLSIZE;
+globalvar TCELLSIZE;    //width(in pixels) square on sprite
 TCELLSIZE = 30;
-globalvar TCELLHIGHT;
-TCELLHIGHT = 27;</code>
+globalvar TCELLHIGHT;   //height(in pixels) square on sprite
+TCELLHIGHT = 27;
+globalvar TCELLSIZETOZ;
+TCELLSIZETOZ = 8;
+globalvar TCELLSIZETOX;
+TCELLSIZETOX = 21.5;
+room_goto_next();</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>

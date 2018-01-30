@@ -28,7 +28,8 @@
             <string>list_pos_obj = ds_list_create();    //list of possible objects
 list_set_obj = ds_list_create();    //list of set objects
 
-ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
+ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right,
+        obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r);
 //ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 //ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 
@@ -240,6 +241,7 @@ for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
     d_pos += stock_sqr_size + stock_step;
 }
 surface_reset_target();
+
 </string>
           </argument>
         </arguments>
@@ -374,11 +376,11 @@ if (cursor_state == CURSOR_STATE.GRID)
                            var l_layer = layers_list[| l_gz + k];
                            var l_grid = l_layer[| LAYER.GRID];
                            l_grid[# l_gx + i, l_gy + j] = tmp;
-                           ds_list_add(list_set_obj, tmp);
-                           ds_list_d3_sort(list_set_obj);
                         }
                     }
                 }
+                ds_list_add(list_set_obj, tmp);
+                ds_list_d3_sort(list_set_obj);
             }
         }
     }
@@ -397,10 +399,11 @@ if (cursor_state == CURSOR_STATE.GRID)
                         var l_layer = layers_list[| tmp.gz + k];
                         var l_grid = l_layer[| LAYER.GRID];
                         l_grid[# tmp.gx + i, tmp.gy + j] = noone;
-                        ds_list_delete_value(list_set_obj, tmp);
                     }
                 }
             }
+            ds_list_delete_value(list_set_obj, tmp);
+            ds_list_d3_sort(list_set_obj);
         }
     }
 }
@@ -446,11 +449,22 @@ for (var i = 0; i &lt; TMAPSIZE; i++)
 for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 {
     var obj = list_set_obj[| i];
-    draw_sprite_ext(obj.sprite_index, -1, d3_x + 
+    /*draw_sprite_ext(obj.sprite_index, -1, d3_x + 
     lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
     d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
+    d3_mult, d3_mult, 0, c_white, 1);*/
+    draw_surface_ext(obj.surf, -obj.sprite_xoffset * d3_mult + d3_x + 
+    lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
+    -obj.sprite_yoffset * d3_mult + d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + 
+    lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
     d3_mult, d3_mult, 0, c_white, 1);
 }
+
+draw_text(100, 100, fps_real);
+/*for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
+{
+    draw_text(50, 50 + i * 20, object_get_name(list_set_obj[| i].object_index));
+}*/
 </string>
           </argument>
         </arguments>
