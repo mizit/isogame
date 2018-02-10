@@ -29,7 +29,7 @@
 list_set_obj = ds_list_create();    //list of set objects
 
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right,
-        obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r);
+        obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r, object10);
 //ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 //ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
 
@@ -81,6 +81,9 @@ d3_y = 352;
 d3_size = 300;
 d3_cell_size = grid_size / TMAPSIZE;
 d3_mult = d3_cell_size / TCELLSIZE;
+ 
+ ANGO = 45;
+
 </string>
           </argument>
         </arguments>
@@ -185,9 +188,8 @@ grid_x + grid_size, grid_y + grid_size))
     case CURSOR_STATE.STOCK:
     {
         var st_len = (stock_sqr_size + stock_step) * ds_list_size(list_pos_obj) - stock_step + 2 * stock_xoff;
-        if (mouse_wheel_down())
-        {
-            stock_offset = min(0, stock_offset + stock_roll_step);
+        if (mouse_wheel_down()){
+         stock_offset = min(0, stock_offset + stock_roll_step);
         }
         if (mouse_wheel_up())
         {
@@ -224,6 +226,8 @@ grid_x + grid_size, grid_y + grid_size))
     }
 }
 
+ds_list_d3_sort(list_set_obj);
+
 surface_clear(stock_surf);
 surface_set_target(stock_surf);
 var d_pos = stock_xoff + stock_offset;
@@ -241,6 +245,7 @@ for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
     d_pos += stock_sqr_size + stock_step;
 }
 surface_reset_target();
+
 
 </string>
           </argument>
@@ -279,8 +284,7 @@ draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 
 
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
-for (var i = 0; i &lt; ds_list_size(layers_list); i++)
-{
+ for(var i = 0; i &lt; ds_list_size(layers_list); i++){
     if (cursor_state == CURSOR_STATE.LAYER)
     {
         if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, layers_lb_y - (i + 1) * layers_height, 
@@ -300,6 +304,7 @@ for (var i = 0; i &lt; ds_list_size(layers_list); i++)
         layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 1);
     }
 }
+
 if (cursor_state == CURSOR_STATE.NEW_LAYER)
 {
     draw_set_color(c_green);
@@ -309,8 +314,7 @@ if (cursor_state == CURSOR_STATE.NEW_LAYER)
 draw_set_color(c_black);
 draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_height, "+New layer");
 
-for (var i = 0; i &lt; TMAPSIZE; i++)
-{
+ for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
         var cell = ds_grid_get(ds_list_find_value(layers_list[| layers_select], LAYER.GRID), i, j);
@@ -326,11 +330,11 @@ for (var i = 0; i &lt; TMAPSIZE; i++)
         draw_set_color(c_black);
         draw_rectangle(grid_x + i * grid_cell_size, grid_y + j * grid_cell_size, grid_x + (i + 1) * grid_cell_size, grid_y + (j + 1) * grid_cell_size, 1);
     }
-}
+ }
+
 //draw_rectangle(grid_x, grid_y, grid_x + grid_size, grid_y + grid_size, 0);
 
-if (cursor_state == CURSOR_STATE.GRID)
-{
+ if(cursor_state == CURSOR_STATE.GRID){
     var l_gx, l_gy;
     l_gx = floor((mouse_x - grid_x) / grid_cell_size);
     l_gy = floor((mouse_y - grid_y) / grid_cell_size);
@@ -406,45 +410,46 @@ if (cursor_state == CURSOR_STATE.GRID)
             ds_list_d3_sort(list_set_obj);
         }
     }
-}
+ }
+
 ///draw 3d substrate
-for (var i = 0; i &lt; TMAPSIZE; i++)
-{
+ for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
         draw_set_color(c_gray);
         draw_primitive_begin(pr_trianglefan);
-        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
         
-        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
         
-        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
+        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
         
-        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
+        
+        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
         draw_primitive_end();
         draw_set_color(c_black);
-        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT,
-        d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
-        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT,
-        d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT);
-        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * (i - 1), 45)) * ASPECT,
-        d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
-        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * (j - 1), 45),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT,
-        d3_x + lengthdir_x(i * d3_cell_size, -45) + lengthdir_y(d3_cell_size * j, 45),
-        d3_y + (lengthdir_y(j * d3_cell_size, -45) + lengthdir_x(d3_cell_size * i, 45)) * ASPECT);
+        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT,
+        d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
+        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT,
+        d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
+        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT,
+        d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
+        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
+        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT,
+        d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
     }
-}
+ }
 
 for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 {
@@ -453,14 +458,18 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
     lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
     d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
     d3_mult, d3_mult, 0, c_white, 1);*/
-    draw_surface_ext(obj.surf, -obj.sprite_xoffset * d3_mult + d3_x + 
-    lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
-    -obj.sprite_yoffset * d3_mult + d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + 
-    lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
-    d3_mult, d3_mult, 0, c_white, 1);
+    if (surface_exists(obj.surf))
+    {
+        draw_surface_ext(obj.surf, -obj.sprite_xoffset * d3_mult + d3_x + 
+        lengthdir_x(obj.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * obj.gy, ANGO),
+        -obj.sprite_yoffset * d3_mult + d3_y + (lengthdir_y(obj.gy * d3_cell_size, -ANGO) + 
+        lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
+        d3_mult, d3_mult, 0, c_white, 1);
+    }
 }
 
-draw_text(100, 100, fps_real);
+ draw_text(100, 100, "fps: " + string(fps_real));
+ draw_text(100, 140, "ASPECT: " + string(ASPECT));
 /*for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 {
     draw_text(50, 50 + i * 20, object_get_name(list_set_obj[| i].object_index));
@@ -470,7 +479,7 @@ draw_text(100, 100, fps_real);
         </arguments>
       </action>
     </event>
-    <event eventtype="9" enumb="83">
+    <event eventtype="9" enumb="90">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -487,7 +496,58 @@ draw_text(100, 100, fps_real);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>tsave("test");
+            <string>/// SAVE
+ tsave("test");
+ game_end();
+ exit;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="87">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ ANGO += 1;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="81">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ ANGO -= 1;
 </string>
           </argument>
         </arguments>
@@ -510,7 +570,105 @@ draw_text(100, 100, fps_real);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>tload("test");
+            <string>/// LOAD
+ tload("test");
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="39">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ ASPECT += 0.01;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="37">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ ASPECT -= 0.01;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="27">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ game_end();
+ exit;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="13">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>
+ game_restart();
 </string>
           </argument>
         </arguments>

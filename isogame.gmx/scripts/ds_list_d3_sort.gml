@@ -38,6 +38,14 @@ for (var i = 0; i < ds_list_size(l_list); i++)
             bx = -B.sprite_xoffset + lengthdir_x(B.gx * TCELLSIZE, -45) + lengthdir_y(TCELLSIZE * B.gy, 45);
             ay = -A.sprite_yoffset + (lengthdir_y(A.gy * TCELLSIZE, -45) + lengthdir_x(TCELLSIZE * A.gx, 45)) * ASPECT - A.gz * TCELLHIGHT;
             by = -B.sprite_yoffset + (lengthdir_y(B.gy * TCELLSIZE, -45) + lengthdir_x(TCELLSIZE * B.gx, 45)) * ASPECT - B.gz * TCELLHIGHT;
+            if (!surface_exists(A.surf))
+            {
+                A.surf = surface_create(A.sprite_width, A.sprite_height);
+            }
+            if (!surface_exists(B.surf))
+            {
+                B.surf = surface_create(B.sprite_width, B.sprite_height);
+            }
             surface_set_target(A.surf);
             draw_set_blend_mode(bm_subtract);
             draw_surface(B.surf, bx - ax, by - ay);
