@@ -59,6 +59,7 @@
     <object>objects\obj_stg_general</object>
     <object>objects\obj_stg_place</object>
     <object>objects\obj_stg_place_plane</object>
+    <object>objects\obj_tloader</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\r_generate</room>

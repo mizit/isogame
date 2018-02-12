@@ -30,12 +30,15 @@ for (var i = 0; i < l_obj_num; i++)
         {
             ds_list_add(obj_general.layers_list, layer_cell_create("layer" + string(ds_list_size(obj_general.layers_list))));
         }
-        var l_layer = obj_general.layers_list[| tmp.gz];
-        var l_grid = l_layer[| LAYER.GRID];
-        ds_grid_set_region(l_grid, tmp.gx, tmp.gy, tmp.gx + tmp.width - 1, 
-        tmp.gy + tmp.height - 1, tmp);
+        for (var k = tmp.gz; k < (tmp.gz + tmp.height); k++)
+        {
+            var l_layer = obj_general.layers_list[| k];
+            var l_grid = l_layer[| LAYER.GRID];
+            ds_grid_set_region(l_grid, tmp.gx, tmp.gy, tmp.gx + tmp.length - 1, 
+            tmp.gy + tmp.width - 1, tmp);
+        }
         ds_list_add(obj_general.list_set_obj, tmp);
-        ds_list_d3_sort(obj_general.list_set_obj);
     }
 }
+ds_list_d3_sort(obj_general.list_set_obj);
 file_text_close(l_file);

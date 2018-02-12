@@ -82,7 +82,7 @@ d3_size = 300;
 d3_cell_size = grid_size / TMAPSIZE;
 d3_mult = d3_cell_size / TCELLSIZE;
  
- ANGO = 45;
+ANGO = 45;
 
 </string>
           </argument>
@@ -407,6 +407,7 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
                 }
             }
             ds_list_delete_value(list_set_obj, tmp);
+            instance_destroy(tmp);
             ds_list_d3_sort(list_set_obj);
         }
     }
@@ -498,8 +499,8 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
             <kind>1</kind>
             <string>/// SAVE
  tsave("test");
- game_end();
- exit;
+ //game_end();
+ //exit;
 </string>
           </argument>
         </arguments>
@@ -642,9 +643,10 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>
- game_end();
- exit;
+            <string>tsave(string(room_x) + "x" + string(room_y));
+room_goto(r_strategy_creator);
+// game_end();
+// exit;
 </string>
           </argument>
         </arguments>
