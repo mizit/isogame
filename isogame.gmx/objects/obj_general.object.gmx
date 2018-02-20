@@ -79,8 +79,8 @@ grid_cell_size = grid_size / TMAPSIZE;
 d3_x = 736;
 d3_y = 352;
 d3_size = 300;
-d3_cell_size = grid_size / TMAPSIZE;
-d3_mult = d3_cell_size / TCELLSIZE;
+d3_cell_size = TCELLSIZE;//grid_size / TMAPSIZE;
+d3_mult = 1;//d3_cell_size / TCELLSIZE;
  
 ANGO = 45;
 
@@ -269,7 +269,7 @@ surface_reset_target();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_color(c_green);
+            <string>/*draw_set_color(c_green);
 //draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 0);
 if (surface_exists(stock_surf))
 {
@@ -412,7 +412,7 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
         }
     }
  }
-
+*/
 ///draw 3d substrate
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
@@ -455,10 +455,6 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
 for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 {
     var obj = list_set_obj[| i];
-    /*draw_sprite_ext(obj.sprite_index, -1, d3_x + 
-    lengthdir_x(obj.gx * d3_cell_size, -45) + lengthdir_y(d3_cell_size * obj.gy, 45),
-    d3_y + (lengthdir_y(obj.gy * d3_cell_size, -45) + lengthdir_x(d3_cell_size * obj.gx, 45)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
-    d3_mult, d3_mult, 0, c_white, 1);*/
     if (surface_exists(obj.surf))
     {
         draw_surface_ext(obj.surf, -obj.sprite_xoffset * d3_mult + d3_x + 
@@ -471,10 +467,6 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 
  draw_text(100, 100, "fps: " + string(fps_real));
  draw_text(100, 140, "ASPECT: " + string(ASPECT));
-/*for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
-{
-    draw_text(50, 50 + i * 20, object_get_name(list_set_obj[| i].object_index));
-}*/
 </string>
           </argument>
         </arguments>

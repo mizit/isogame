@@ -43,23 +43,25 @@
     <script>scripts\stg_load.gml</script>
   </scripts>
   <objects name="objects">
-    <object>objects\obj_general</object>
-    <objects name="squares">
-      <object>objects\obj_sqr_parent</object>
-      <object>objects\obj_sqr_small</object>
-      <object>objects\obj_sqr_tall</object>
-      <object>objects\obj_sqr_big_b</object>
-      <object>objects\obj_sqr_big_g</object>
-      <object>objects\obj_sqr_big_r</object>
-      <object>objects\obj_sqr_wide_left</object>
-      <object>objects\obj_sqr_wide_right</object>
+    <objects name="map creator">
+      <object>objects\obj_general</object>
+      <object>objects\obj_motion_controller</object>
+      <object>objects\object10</object>
+      <objects name="squares">
+        <object>objects\obj_sqr_parent</object>
+        <object>objects\obj_sqr_small</object>
+        <object>objects\obj_sqr_tall</object>
+        <object>objects\obj_sqr_big_b</object>
+        <object>objects\obj_sqr_big_g</object>
+        <object>objects\obj_sqr_big_r</object>
+        <object>objects\obj_sqr_wide_left</object>
+        <object>objects\obj_sqr_wide_right</object>
+      </objects>
+      <object>objects\obj_stg_general</object>
+      <object>objects\obj_stg_place</object>
+      <object>objects\obj_stg_place_plane</object>
+      <object>objects\obj_tloader</object>
     </objects>
-    <object>objects\obj_motion_controller</object>
-    <object>objects\object10</object>
-    <object>objects\obj_stg_general</object>
-    <object>objects\obj_stg_place</object>
-    <object>objects\obj_stg_place_plane</object>
-    <object>objects\obj_tloader</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\r_generate</room>
