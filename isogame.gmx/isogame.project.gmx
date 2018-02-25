@@ -22,6 +22,12 @@
     <sprite>sprites\sprite10</sprite>
     <sprite>sprites\s_stg_place</sprite>
     <sprite>sprites\s_stg_plane</sprite>
+    <sprite>sprites\sCUBO_0</sprite>
+    <sprite>sprites\sCUBO_1</sprite>
+    <sprite>sprites\sCUBO_3</sprite>
+    <sprite>sprites\sGREEN_82</sprite>
+    <sprite>sprites\sRED_82</sprite>
+    <sprite>sprites\sBLU_82</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>

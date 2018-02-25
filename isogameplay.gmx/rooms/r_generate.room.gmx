@@ -21,7 +21,7 @@ TCELLSIZE = 30;
 globalvar TCELLHIGHT;   //height(in pixels) square on sprite
 TCELLHIGHT = 21;
 globalvar TCELLSIZETOZ;
-TCELLSIZETOZ = 10.2;
+TCELLSIZETOZ = 21;
 globalvar TCELLSIZETOX;
 TCELLSIZETOX = 19.7;
 

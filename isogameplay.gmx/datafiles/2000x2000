@@ -4,9 +4,9 @@ obj_sqr_small
 obj_sqr_tall
 2 0 14 1 0 14 3 
 obj_sqr_wide_left
-0 
+1 12 7 0 
 obj_sqr_wide_right
-0 
+1 12 3 0 
 obj_sqr_big_b
 3 10 12 0 8 2 0 2 7 0 
 obj_sqr_big_g

@@ -3,11 +3,11 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="2" name="datafiles">
+  <datafiles number="3" name="datafiles">
     <datafile>
       <name>2000x2000</name>
       <exists>-1</exists>
-      <size>219</size>
+      <size>233</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -27,6 +27,7 @@
   <sprites name="sprites">
     <sprites name="squares">
       <sprite>sprites\s_sqr_small</sprite>
+      <sprite>sprites\s_gg</sprite>
       <sprite>sprites\s_sqr_tall</sprite>
       <sprite>sprites\s_sqr_wide_left</sprite>
       <sprite>sprites\s_sqr_wide_right</sprite>
@@ -52,6 +53,8 @@
     <script>scripts\sqr_set_size.gml</script>
     <script>scripts\point_in_cube.gml</script>
     <script>scripts\cube_collision.gml</script>
+    <script>scripts\ds_list_d3_sum.gml</script>
+    <script>scripts\ds_list_d3_surfaces.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
@@ -66,6 +69,7 @@
       <object>objects\obj_sqr_big_r</object>
       <object>objects\obj_sqr_wide_left</object>
       <object>objects\obj_sqr_wide_right</object>
+      <object>objects\obj_gg</object>
     </objects>
   </objects>
   <rooms name="rooms">

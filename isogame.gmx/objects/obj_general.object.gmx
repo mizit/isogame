@@ -79,8 +79,8 @@ grid_cell_size = grid_size / TMAPSIZE;
 d3_x = 736;
 d3_y = 352;
 d3_size = 300;
-d3_cell_size = TCELLSIZE;//grid_size / TMAPSIZE;
-d3_mult = 1;//d3_cell_size / TCELLSIZE;
+d3_cell_size = grid_size / TMAPSIZE;
+d3_mult = d3_cell_size / TCELLSIZE;
  
 ANGO = 45;
 
@@ -269,7 +269,7 @@ surface_reset_target();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/*draw_set_color(c_green);
+            <string>draw_set_color(c_green);
 //draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 0);
 if (surface_exists(stock_surf))
 {
@@ -412,7 +412,7 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
         }
     }
  }
-*/
+
 ///draw 3d substrate
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
