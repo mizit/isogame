@@ -27,12 +27,13 @@
             <kind>1</kind>
             <string>list_pos_obj = ds_list_create();    //list of possible objects
 list_set_obj = ds_list_create();    //list of set objects
+list_pos_tile = ds_list_create();
+list_set_tile = ds_list_create();
 
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right,
         obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r, object10);
-//ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
-//ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right);
-
+ds_list_add(list_pos_tile, obj_tile1, obj_tile2, obj_tile3);
+        
 for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
 {
     var tmp = instance_create(-1000, -1000, list_pos_obj[| i]);
@@ -40,6 +41,15 @@ for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
     tmp.gy = noone;
     tmp.gz = noone;
 }
+
+for (var i = 0; i &lt; ds_list_size(list_pos_tile); i++)
+{
+    var tmp = instance_create(-1000, -1000, list_pos_tile[| i]);
+    tmp.gx = noone;
+    tmp.gy = noone;
+    tmp.gz = noone;
+}
+
 
 cursor_state = 0;
 enum CURSOR_STATE{
@@ -64,6 +74,7 @@ stock_roll_step = 50;
 stock_select = noone;
 
 layers_list = ds_list_create();
+ds_list_add(layers_list, layer_cell_create("tiles"));
 ds_list_add(layers_list, layer_cell_create("layer" + string(ds_list_size(layers_list))));
 layers_lb_x = 32;
 layers_lb_y = 544;
@@ -115,6 +126,8 @@ for (var i = 0; i &lt; ds_list_size(layers_list); i++)
 }
 ds_list_destroy(layers_list);
 ds_list_destroy(list_set_obj);
+ds_list_destroy(list_pos_tile);
+ds_list_destroy(list_set_tile);
 </string>
           </argument>
         </arguments>
@@ -231,18 +244,37 @@ ds_list_d3_sort(list_set_obj);
 surface_clear(stock_surf);
 surface_set_target(stock_surf);
 var d_pos = stock_xoff + stock_offset;
-for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
+if (layers_select == 0)
 {
-    var obj = list_pos_obj[| i];
-    var mult = min(stock_sqr_size / obj.sprite_width, stock_sqr_size / obj.sprite_height);
-    //draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
-    draw_sprite_ext(obj.sprite_index, -1, d_pos + obj.sprite_xoffset * mult + (stock_sqr_size - obj.sprite_width * mult) / 2, 
-    stock_yoff + obj.sprite_yoffset * mult + (stock_sqr_size - obj.sprite_height * mult) / 2, mult, mult, 0, c_white, 1);
-    if (stock_select == i)
+    for (var i = 0; i &lt; ds_list_size(list_pos_tile); i++)
     {
-        draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
+        var obj = list_pos_tile[| i];
+        var mult = min(stock_sqr_size / obj.sprite_width, stock_sqr_size / obj.sprite_height);
+
+        draw_sprite_ext(obj.sprite_index, -1, d_pos + obj.sprite_xoffset * mult + (stock_sqr_size - obj.sprite_width * mult) / 2, 
+        stock_yoff + obj.sprite_yoffset * mult + (stock_sqr_size - obj.sprite_height * mult) / 2, mult, mult, 0, c_white, 1);
+        if (stock_select == i)
+        {
+            draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
+        }
+        d_pos += stock_sqr_size + stock_step;
     }
-    d_pos += stock_sqr_size + stock_step;
+}
+else
+{
+    for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
+    {
+        var obj = list_pos_obj[| i];
+        var mult = min(stock_sqr_size / obj.sprite_width, stock_sqr_size / obj.sprite_height);
+        //draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
+        draw_sprite_ext(obj.sprite_index, -1, d_pos + obj.sprite_xoffset * mult + (stock_sqr_size - obj.sprite_width * mult) / 2, 
+        stock_yoff + obj.sprite_yoffset * mult + (stock_sqr_size - obj.sprite_height * mult) / 2, mult, mult, 0, c_white, 1);
+        if (stock_select == i)
+        {
+            draw_rectangle(d_pos, stock_yoff, d_pos + stock_sqr_size, stock_yoff + stock_sqr_size, 1);
+        }
+        d_pos += stock_sqr_size + stock_step;
+    }
 }
 surface_reset_target();
 
@@ -269,8 +301,9 @@ surface_reset_target();
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_color(c_green);
-//draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 0);
+            <string>
+//drawing stock
+draw_set_color(c_green);
 if (surface_exists(stock_surf))
 {
     draw_surface(stock_surf, stock_x, stock_y);
@@ -282,9 +315,12 @@ else
 draw_set_color(c_black);
 draw_rectangle(stock_x, stock_y, stock_x + stock_width, stock_y + stock_height, 1);
 
+//drawing layer selector and backlight
 draw_set_halign(fa_center);
 draw_set_valign(fa_middle);
- for(var i = 0; i &lt; ds_list_size(layers_list); i++){
+
+for(var i = 0; i &lt; ds_list_size(layers_list); i++)
+{
     if (cursor_state == CURSOR_STATE.LAYER)
     {
         if (point_in_rectangle(mouse_x, mouse_y, layers_lb_x, layers_lb_y - (i + 1) * layers_height, 
@@ -292,7 +328,7 @@ draw_set_valign(fa_middle);
         {
             draw_set_color(c_green);
             draw_rectangle(layers_lb_x, layers_lb_y - i * layers_height, 
-        layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 0);
+            layers_lb_x + layers_width, layers_lb_y - (i + 1) * layers_height, 0);
         }
     }
     draw_set_color(c_black);
@@ -305,6 +341,7 @@ draw_set_valign(fa_middle);
     }
 }
 
+//drawing layers list
 if (cursor_state == CURSOR_STATE.NEW_LAYER)
 {
     draw_set_color(c_green);
@@ -314,6 +351,7 @@ if (cursor_state == CURSOR_STATE.NEW_LAYER)
 draw_set_color(c_black);
 draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_height, "+New layer");
 
+//drawing 2d objects
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
@@ -343,72 +381,121 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
     {
         ///Drawing potential objects
         var test = 1;
-        for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
-        {  
-            for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
+        if (layers_select == 0)
+        {
+            if (!grid_is_cell_free(l_gx, l_gy, 0))
             {
-                for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
+                test = 0;
+            }
+        }
+        else
+        {
+            for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
+            {  
+                for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
                 {
-                    if (!grid_is_cell_free(l_gx + i, l_gy + j, l_gz + k))
+                    for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
                     {
-                        test = 0;
+                        if (!grid_is_cell_free(l_gx + i, l_gy + j, l_gz + k))
+                        {
+                            test = 0;
+                        }
                     }
                 }
             }
         }
         if (test)
         {
-            draw_set_alpha(0.5);
-            draw_set_color(list_pos_obj[| stock_select].color);
-            draw_rectangle(grid_x + l_gx * grid_cell_size, grid_y + l_gy * grid_cell_size,
-            grid_x + (l_gx + list_pos_obj[| stock_select].length) * grid_cell_size, 
-            grid_y + (l_gy + list_pos_obj[| stock_select].width) * grid_cell_size, 0);
-            draw_set_alpha(1);
-            ///Setting objects
-            if (mouse_check_button_pressed(mb_left))
+            if (layers_select != 0)
             {
-                var tmp = instance_create(-1000, -1000, list_pos_obj[| stock_select].object_index);
-                tmp.gx = l_gx;
-                tmp.gy = l_gy;
-                tmp.gz = l_gz;
-                for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
-                {  
-                    for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
-                    {
-                        for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
+                draw_set_alpha(0.5);
+                draw_set_color(list_pos_obj[| stock_select].color);
+                draw_rectangle(grid_x + l_gx * grid_cell_size, grid_y + l_gy * grid_cell_size,
+                grid_x + (l_gx + list_pos_obj[| stock_select].length) * grid_cell_size, 
+                grid_y + (l_gy + list_pos_obj[| stock_select].width) * grid_cell_size, 0);
+                draw_set_alpha(1);
+            }
+            ///Setting objects
+            if (layers_select == 0)
+            {
+                if (mouse_check_button(mb_left))
+                {
+                    var tmp = instance_create(-1000, -1000, list_pos_tile[| stock_select].object_index);
+                    tmp.gx = l_gx;
+                    tmp.gy = l_gy;
+                    tmp.gz = 0;
+                    var l_layer = layers_list[| 0];
+                    var l_grid = l_layer[| LAYER.GRID];
+                    l_grid[# l_gx, l_gy] = tmp;
+                    ds_list_add(list_set_tile, tmp);
+                   // ds_list_d3_sort(list_set_tile);
+                }
+            }
+            else
+            {
+                if (mouse_check_button_pressed(mb_left))
+                {
+                    var tmp = instance_create(-1000, -1000, list_pos_obj[| stock_select].object_index);
+                    tmp.gx = l_gx;
+                    tmp.gy = l_gy;
+                    tmp.gz = l_gz;
+                    for (var i = 0; i &lt; list_pos_obj[| stock_select].length; i++)
+                    {  
+                        for (var j = 0; j &lt; list_pos_obj[| stock_select].width; j++)
                         {
-                           var l_layer = layers_list[| l_gz + k];
-                           var l_grid = l_layer[| LAYER.GRID];
-                           l_grid[# l_gx + i, l_gy + j] = tmp;
+                            for (var k = 0; k &lt; list_pos_obj[| stock_select].height; k++)
+                            {
+                               var l_layer = layers_list[| l_gz + k];
+                               var l_grid = l_layer[| LAYER.GRID];
+                               l_grid[# l_gx + i, l_gy + j] = tmp;
+                            }
                         }
                     }
+                    ds_list_add(list_set_obj, tmp);
+                    ds_list_d3_sort(list_set_obj);
                 }
-                ds_list_add(list_set_obj, tmp);
-                ds_list_d3_sort(list_set_obj);
             }
         }
     }
     ///deleting objects
-    if (mouse_check_button(mb_right))
+    if (layers_select == 0)
     {
-        var tmp = grid_cell(l_gx, l_gy, l_gz);
-        if (tmp != noone)
+        if (mouse_check_button(mb_right))
         {
-            for (var i = 0; i &lt; tmp.length; i++)
-            {  
-                for (var j = 0; j &lt; tmp.width; j++)
-                {
-                    for (var k = 0; k &lt; tmp.height; k++)
+            var tmp = grid_cell(l_gx, l_gy, l_gz);
+            if (tmp != noone)
+            {
+                var l_layer = layers_list[| 0];
+                var l_grid = l_layer[| LAYER.GRID];
+                l_grid[# tmp.gx, tmp.gy] = noone;
+                ds_list_delete_value(list_set_obj, tmp);
+                instance_destroy(tmp);
+            }
+        }
+    }
+    else
+    {
+        if (mouse_check_button(mb_right))
+        {
+            var tmp = grid_cell(l_gx, l_gy, l_gz);
+            if (tmp != noone)
+            {
+                for (var i = 0; i &lt; tmp.length; i++)
+                {  
+                    for (var j = 0; j &lt; tmp.width; j++)
                     {
-                        var l_layer = layers_list[| tmp.gz + k];
-                        var l_grid = l_layer[| LAYER.GRID];
-                        l_grid[# tmp.gx + i, tmp.gy + j] = noone;
+                        for (var k = 0; k &lt; tmp.height; k++)
+                        {
+                            var l_layer = layers_list[| tmp.gz + k];
+                            var l_grid = l_layer[| LAYER.GRID];
+                            l_grid[# tmp.gx + i, tmp.gy + j] = noone;
+                        }
                     }
                 }
+                ds_list_delete_value(list_set_obj, tmp);
+                instance_destroy(tmp);
+                ds_list_d3_sort(list_set_obj);
             }
-            ds_list_delete_value(list_set_obj, tmp);
-            instance_destroy(tmp);
-            ds_list_d3_sort(list_set_obj);
         }
     }
  }
@@ -417,7 +504,18 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
-        draw_set_color(c_gray);
+        var l_layer = layers_list[| 0];
+        var l_grid = l_layer[| LAYER.GRID];
+        if (l_grid[# i, j] != noone)
+        {
+            var l_tile = l_grid[# i, j];
+            draw_sprite_ext(l_tile.sprite_index, -1, d3_x + 
+            lengthdir_x(l_tile.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * l_tile.gy, ANGO),
+            d3_y + (lengthdir_y(l_tile.gy * d3_cell_size, -ANGO) + 
+            lengthdir_x(d3_cell_size * l_tile.gx, ANGO)) * ASPECT - l_tile.gz * d3_mult * TCELLHIGHT,
+            d3_mult, d3_mult, 0, c_white, 1);
+        }
+        /*draw_set_color(c_gray);
         draw_primitive_begin(pr_trianglefan);
         
         draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
@@ -448,10 +546,20 @@ draw_text(layers_lb_x + layers_width / 2, layers_lb_y - (i + 0.5) * layers_heigh
         draw_line(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
         d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT,
         d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
+        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);*/
     }
  }
 
+/*for (var i = 0; i &lt; ds_list_size(list_set_tile); i++)
+{
+    var obj = list_set_tile[| i];
+    draw_sprite_ext(obj.sprite_index, -1, d3_x + 
+    lengthdir_x(obj.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * obj.gy, ANGO),
+    d3_y + (lengthdir_y(obj.gy * d3_cell_size, -ANGO) + 
+    lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
+    d3_mult, d3_mult, 0, c_white, 1);
+}*/
+ 
 for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 {
     var obj = list_set_obj[| i];
@@ -460,7 +568,7 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
         draw_surface_ext(obj.surf, -obj.sprite_xoffset * d3_mult + d3_x + 
         lengthdir_x(obj.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * obj.gy, ANGO),
         -obj.sprite_yoffset * d3_mult + d3_y + (lengthdir_y(obj.gy * d3_cell_size, -ANGO) + 
-        lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT,
+        lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - (obj.gz - 1) * d3_mult * TCELLHIGHT,
         d3_mult, d3_mult, 0, c_white, 1);
     }
 }

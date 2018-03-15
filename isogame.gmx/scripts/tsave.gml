@@ -5,7 +5,7 @@ if (instance_exists(obj_general))
     with (obj_general)
     {
         var l_file = file_text_open_write(argument0);
-        file_text_write_real(l_file, ds_list_size(list_pos_obj));
+        file_text_write_real(l_file, ds_list_size(list_pos_obj) + ds_list_size(list_pos_tile));
         for (var i = 0; i < ds_list_size(list_pos_obj); i++)
         {
             file_text_writeln(l_file);
@@ -22,11 +22,49 @@ if (instance_exists(obj_general))
                 }
             }
         }
+        
+        file_text_write_real(l_file, ds_list_size(list_pos_tile));
+        for (var i = 0; i < ds_list_size(list_pos_tile); i++)
+        {
+            file_text_writeln(l_file);
+            file_text_write_string(l_file, object_get_name(list_pos_tile[| i]));
+            file_text_writeln(l_file);
+            file_text_write_real(l_file, instance_number(list_pos_tile[| i]) - 1);
+            with(list_pos_tile[| i])
+            {
+                if (gx != noone) && (gy != noone) && (gz != noone)
+                {
+                    file_text_write_real(l_file, gx);
+                    file_text_write_real(l_file, gy);
+                    file_text_write_real(l_file, gz);
+                }
+            }
+        }
         file_text_close(l_file);
+        
+        
         //show_message(lengthdir_y(TMAPSIZE * d3_cell_size, ANGO));
         var l_surf = surface_create(TMAPSIZE * TCELLSIZE,
         TMAPSIZE * TCELLHIGHT);
         surface_set_target(l_surf);
+        for(var i = 0; i < TMAPSIZE; i++)
+        {
+            for (var j = 0; j < TMAPSIZE; j++)
+            {
+                var l_layer = layers_list[| 0];
+                var l_grid = l_layer[| LAYER.GRID];
+                if (l_grid[# i, j] != noone)
+                {
+                    var l_tile = l_grid[# i, j];
+                    draw_sprite_ext(l_tile.sprite_index, -1, surface_get_width(l_surf) / 2 +
+                    lengthdir_x(l_tile.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * l_tile.gy, ANGO),
+                    surface_get_height(l_surf) * 0.18 +(lengthdir_y(l_tile.gy * d3_cell_size, -ANGO) + 
+                    lengthdir_x(d3_cell_size * l_tile.gx, ANGO)) * ASPECT - l_tile.gz * d3_mult * TCELLHIGHT,
+                    d3_mult, d3_mult, 0, c_white, 1);
+                }
+            }
+        }
+        
         for (var i = 0; i < ds_list_size(list_set_obj); i++)
         {
             var obj = list_set_obj[| i];

@@ -28,6 +28,9 @@
     <sprite>sprites\sGREEN_82</sprite>
     <sprite>sprites\sRED_82</sprite>
     <sprite>sprites\sBLU_82</sprite>
+    <sprite>sprites\s_place1</sprite>
+    <sprite>sprites\s_place2</sprite>
+    <sprite>sprites\s_place3</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -67,6 +70,12 @@
       <object>objects\obj_stg_place</object>
       <object>objects\obj_stg_place_plane</object>
       <object>objects\obj_tloader</object>
+      <objects name="tiles">
+        <object>objects\obj_tile_parent</object>
+        <object>objects\obj_tile1</object>
+        <object>objects\obj_tile2</object>
+        <object>objects\obj_tile3</object>
+      </objects>
     </objects>
   </objects>
   <rooms name="rooms">

@@ -26,18 +26,30 @@ for (var i = 0; i < l_obj_num; i++)
         tmp.gx = file_text_read_real(l_file);
         tmp.gy = file_text_read_real(l_file);
         tmp.gz = file_text_read_real(l_file);
-        while(ds_list_size(obj_general.layers_list) < (tmp.gz + tmp.height))
+        if (object_is_ancestor(tmp.object_index, obj_tile_parent))
         {
-            ds_list_add(obj_general.layers_list, layer_cell_create("layer" + string(ds_list_size(obj_general.layers_list))));
-        }
-        for (var k = tmp.gz; k < (tmp.gz + tmp.height); k++)
-        {
-            var l_layer = obj_general.layers_list[| k];
+            var l_layer = obj_general.layers_list[| 0];
             var l_grid = l_layer[| LAYER.GRID];
-            ds_grid_set_region(l_grid, tmp.gx, tmp.gy, tmp.gx + tmp.length - 1, 
-            tmp.gy + tmp.width - 1, tmp);
+            l_grid[# tmp.gx, tmp.gy] = tmp;
+            ds_list_add(obj_general.list_set_tile, tmp);
         }
-        ds_list_add(obj_general.list_set_obj, tmp);
+        if (object_is_ancestor(tmp.object_index, obj_sqr_parent))
+        {
+            while(ds_list_size(obj_general.layers_list) < (tmp.gz + tmp.height))
+            {
+                ds_list_add(obj_general.layers_list, layer_cell_create("layer" + string(ds_list_size(obj_general.layers_list))));
+            }
+            for (var k = tmp.gz; k < (tmp.gz + tmp.height); k++)
+            {
+                var l_layer = obj_general.layers_list[| k];
+                var l_grid = l_layer[| LAYER.GRID];
+                ds_grid_set_region(l_grid, tmp.gx, tmp.gy, tmp.gx + tmp.length - 1, 
+                tmp.gy + tmp.width - 1, tmp);
+            }
+            ds_list_add(obj_general.list_set_obj, tmp);
+        }
+        
+            
     }
 }
 ds_list_d3_sort(obj_general.list_set_obj);
