@@ -9,19 +9,19 @@ ds_list_copy(l_dst, l_src1);
 for (var i = 0; i < ds_list_size(l_src2); i++)
 {
     var l_test = 0;
-    var B = l_src2[| i];
+    var A = l_src2[| i];
     for (var j = 0; j < ds_list_size(l_dst); j++)
     {
-        var A = l_dst[| j];
+        var B = l_dst[| j];
         if ((A.gx + A.length) <= B.gx) || ((A.gy + A.width) <= B.gy) || ((A.gz + A.height) <= B.gz)
         {
-            ds_list_insert(l_dst, j, B);
+            ds_list_insert(l_dst, j, A);
             l_test = 1;
             break;
         }
     }
     if (!l_test)
     {
-        ds_list_add(l_dst, B);
+        ds_list_add(l_dst, A);
     }
 }

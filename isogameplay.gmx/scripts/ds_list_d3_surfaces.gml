@@ -20,10 +20,10 @@ for (var i = 0; i < ds_list_size(l_list); i++)
         if ((A.gx + A.length) <= B.gx) || ((A.gy + A.width) <= B.gy) || ((A.gz + A.height) <= B.gz)
         {
             var ax, bx, ay, by;
-            ax = -A.sprite_xoffset + lengthdir_x(A.gx * TCELLSIZE, -45) + lengthdir_y(TCELLSIZE * A.gy, 45);
-            bx = -B.sprite_xoffset + lengthdir_x(B.gx * TCELLSIZE, -45) + lengthdir_y(TCELLSIZE * B.gy, 45);
-            ay = -A.sprite_yoffset + (lengthdir_y(A.gy * TCELLSIZE, -45) + lengthdir_x(TCELLSIZE * A.gx, 45)) * ASPECT - A.gz * TCELLHIGHT;
-            by = -B.sprite_yoffset + (lengthdir_y(B.gy * TCELLSIZE, -45) + lengthdir_x(TCELLSIZE * B.gx, 45)) * ASPECT - B.gz * TCELLHIGHT;
+            ax = round(-A.sprite_xoffset + (A.gx - A.gy) * TCELLSIZETOX);
+            bx = round(-B.sprite_xoffset + (B.gx - B.gy) * TCELLSIZETOX);
+            ay = round(-A.sprite_yoffset + (A.gx + A.gy) * TCELLSIZETOZ / 2 - A.gz * TCELLHIGHT);
+            by = round(-B.sprite_yoffset + (B.gx + B.gy) * TCELLSIZETOZ / 2 - B.gz * TCELLHIGHT);
             if (!surface_exists(A.surf))
             {
                 A.surf = surface_create(A.sprite_width, A.sprite_height);
@@ -37,6 +37,12 @@ for (var i = 0; i < ds_list_size(l_list); i++)
             draw_surface(B.surf, bx - ax, by - ay);
             draw_set_colour(c_black);
             //draw_rectangle(0, 0, 20, 20, 0);
+            draw_set_blend_mode(bm_normal);
+            surface_reset_target();
+            
+            surface_set_target(A.area_surf);
+            draw_set_blend_mode(bm_subtract);
+            draw_surface(B.surf, bx - ax, by - ay);
             draw_set_blend_mode(bm_normal);
             surface_reset_target();
         }

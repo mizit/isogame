@@ -2,15 +2,15 @@
 <sprite>
   <type>0</type>
   <xorig>21</xorig>
-  <yorigin>68</yorigin>
+  <yorigin>21</yorigin>
   <colkind>1</colkind>
   <coltolerance>0</coltolerance>
   <sepmasks>0</sepmasks>
   <bboxmode>0</bboxmode>
-  <bbox_left>0</bbox_left>
-  <bbox_right>41</bbox_right>
-  <bbox_top>0</bbox_top>
-  <bbox_bottom>67</bbox_bottom>
+  <bbox_left>8</bbox_left>
+  <bbox_right>36</bbox_right>
+  <bbox_top>6</bbox_top>
+  <bbox_bottom>15</bbox_bottom>
   <HTile>0</HTile>
   <VTile>0</VTile>
   <TextureGroups>
@@ -18,8 +18,8 @@
   </TextureGroups>
   <For3D>0</For3D>
   <width>42</width>
-  <height>68</height>
+  <height>21</height>
   <frames>
-    <frame index="0">images\s_sqr_tall_0.png</frame>
+    <frame index="0">images\s_tst_shadow_0.png</frame>
   </frames>
 </sprite>

@@ -1,17 +1,17 @@
 8 
 obj_sqr_small
-4 14 14 0 14 0 0 0 14 0 0 0 0 
+4 0 0 0 0 14 0 14 0 0 14 14 0 
 obj_sqr_tall
-2 0 14 1 0 14 3 
+2 0 14 3 0 14 1 
 obj_sqr_wide_left
 1 12 7 0 
 obj_sqr_wide_right
 1 12 3 0 
 obj_sqr_big_b
-3 10 12 0 8 2 0 2 7 0 
+3 9 11 0 2 7 0 8 2 0 
 obj_sqr_big_g
-0 
+1 7 12 1 
 obj_sqr_big_r
-0 
+1 8 10 2 
 object10
 0 

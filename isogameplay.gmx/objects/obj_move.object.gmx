@@ -63,12 +63,19 @@ for (var i = 0; i &lt; instance_number(obj_sqr_parent); i++)
     {
         if (cube_collision(id, tmp))
         {
-            gz = tmp.gz + tmp.height;
+            if (dgz &lt; 0)
+            {
+                gz = tmp.gz + tmp.height;
+            }
+            else
+            {
+                gz = tmp.gz - height;
+            }
             dgz = 0;
         }
     }
 }
-if ((gz - 0.5) &lt;= 0)
+if (gz &lt;= 0)
 {
     gz = 0;
     dgz = 0;

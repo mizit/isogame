@@ -3,11 +3,11 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="3" name="datafiles">
+  <datafiles number="4" name="datafiles">
     <datafile>
       <name>2000x2000</name>
       <exists>-1</exists>
-      <size>233</size>
+      <size>246</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -38,10 +38,15 @@
     <sprite>sprites\sprite7</sprite>
     <sprite>sprites\sprite8</sprite>
     <sprite>sprites\sBLUE</sprite>
+    <sprite>sprites\s_table</sprite>
     <sprite>sprites\sRED</sprite>
     <sprite>sprites\sprite10</sprite>
     <sprite>sprites\s_stg_place</sprite>
     <sprite>sprites\s_stg_plane</sprite>
+    <sprite>sprites\s_tst_shadow</sprite>
+    <sprite>sprites\s_place</sprite>
+    <sprite>sprites\sprite20</sprite>
+    <sprite>sprites\s_big_place</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -55,6 +60,8 @@
     <script>scripts\cube_collision.gml</script>
     <script>scripts\ds_list_d3_sum.gml</script>
     <script>scripts\ds_list_d3_surfaces.gml</script>
+    <script>scripts\set_shadow.gml</script>
+    <script>scripts\push.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
@@ -70,6 +77,7 @@
       <object>objects\obj_sqr_wide_left</object>
       <object>objects\obj_sqr_wide_right</object>
       <object>objects\obj_gg</object>
+      <object>objects\obj_table</object>
     </objects>
   </objects>
   <rooms name="rooms">

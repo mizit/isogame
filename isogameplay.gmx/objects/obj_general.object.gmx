@@ -37,12 +37,54 @@ gg.gy = 2;
 gg.gz = 0;
 ds_list_add(list_move, gg);
 
+table = instance_create(0, 0, obj_table);
+table.gx = 5;
+table.gy = 5;
+table.gz = 2;
+ds_list_add(list_move, table);
+
+table = instance_create(0, 0, obj_table);
+table.gx = 6;
+table.gy = 6;
+table.gz = 2;
+ds_list_add(list_move, table);
+
+table = instance_create(0, 0, obj_table);
+table.gx = 8;
+table.gy = 11;
+table.gz = 6;
+ds_list_add(list_move, table);
+
 ANGO = 45;
 
-d3_x = 500;
-d3_y = 350;
-d3_cell_size = TCELLSIZE;
-d3_mult = 1;
+show_x = 500;
+show_y = 350;
+d3_x = show_x;
+d3_y = show_y;
+
+debug_on = 0;
+
+shadow_alpha = 0.7;
+shadow_surf = surface_create(TCELLSIZETOX * TMAPSIZE * 2, TCELLSIZETOZ * TMAPSIZE);
+shadow_surf_mask = surface_create(TCELLSIZETOX * TMAPSIZE * 2, TCELLSIZETOZ * TMAPSIZE);
+surface_set_target(shadow_surf_mask);
+draw_set_colour(c_black);
+draw_rectangle(0, 0, surface_get_width(shadow_surf_mask), surface_get_height(shadow_surf_mask), 0);
+draw_set_blend_mode(bm_subtract);
+for(var i = 0; i &lt; TMAPSIZE; i++)
+{
+    for (var j = 0; j &lt; TMAPSIZE; j++)
+    {
+        draw_primitive_begin(pr_trianglefan);
+        draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j) * TCELLSIZETOZ / 2);
+        draw_vertex((i - j - 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
+        draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 2) * TCELLSIZETOZ / 2);
+        draw_vertex((i - j + 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
+        draw_primitive_end();
+    }
+}
+draw_set_blend_mode(bm_normal);
+surface_reset_target();
 </string>
           </argument>
         </arguments>
@@ -68,6 +110,110 @@ d3_mult = 1;
             <string>ds_list_destroy(list_solid);
 ds_list_destroy(list_move);
 ds_list_destroy(list_all);
+surface_free(shadow_surf);
+surface_free(shadow_surf_mask);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="2">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (instance_exists(obj_gg))
+{
+    d3_x = show_x - round((obj_gg.gx - obj_gg.gy) * TCELLSIZETOX);
+    d3_y = show_y - round((obj_gg.gx + obj_gg.gy) * TCELLSIZETOZ / 2);
+}
+
+for (var i = 0; i &lt; ds_list_size(list_all); i++)
+{
+    surface_clear(list_all[| i].area_surf);
+}
+for (var i = 0; i &lt; ds_list_size(list_all) - 1; i++)
+{
+    for (var j = i + 1; j &lt; ds_list_size(list_all); j++)
+    {
+        var A = list_all[| i];
+        var B = list_all[| j];
+        if (abs(A.gx - B.gx) &lt;= (max(A.shadow_rbx, B.shadow_rbx) / TCELLSIZETOX)) &amp;&amp;
+        (abs(A.gy - B.gy) &lt;= (max(A.shadow_rby, B.shadow_rby) * 2 / TCELLSIZETOZ))
+        {
+            if (A.gz + A.height &lt;= B.gz)
+            {
+                surface_set_target(A.area_surf);
+                draw_surface(B.shadow_surf,
+                round(A.shadow_xoffset - (A.gx - A.gy) * TCELLSIZETOX 
+                - (A.length - A.width) * TCELLSIZETOX -
+                B.shadow_xoffset + (B.gx - B.gy) * TCELLSIZETOX 
+                + (B.length - B.width) * TCELLSIZETOX),
+                round(A.shadow_yoffset - (A.gx + A.gy) * TCELLSIZETOZ / 2 
+                - (A.width + A.length - 2) * TCELLSIZETOZ / 2 - 
+                B.shadow_yoffset + (B.gx + B.gy) * TCELLSIZETOZ / 2 
+                + (B.width + B.length - 2) * TCELLSIZETOZ / 2));
+                surface_reset_target();
+            }
+            if (B.gz + B.height &lt;= A.gz)
+            {
+                surface_set_target(B.area_surf);
+                draw_surface(A.shadow_surf,
+                round(B.shadow_xoffset - (B.gx - B.gy) * TCELLSIZETOX 
+                - (B.length - B.width) * TCELLSIZETOX -
+                A.shadow_xoffset + (A.gx - A.gy) * TCELLSIZETOX 
+                + (A.length - A.width) * TCELLSIZETOX),
+                round(B.shadow_yoffset - (B.gx + B.gy) * TCELLSIZETOZ / 2 
+                - (B.width + B.length - 2) * TCELLSIZETOZ / 2 - 
+                A.shadow_yoffset + (A.gx + A.gy) * TCELLSIZETOZ / 2 
+                + (A.width + A.length - 2) * TCELLSIZETOZ / 2));
+                surface_reset_target();
+            }
+        }
+    }
+    with (list_all[| i])
+    {
+        surface_set_target(area_surf);
+        draw_set_blend_mode(bm_subtract);
+        draw_surface(area_surf_mask, 0, 0);
+        draw_set_blend_mode(bm_normal);
+        surface_reset_target();
+    }
+    
+}
+
+ds_list_d3_surfaces(list_all);
+
+surface_clear(shadow_surf);
+surface_set_target(shadow_surf);
+for (var i = 0; i &lt; ds_list_size(list_all); i++)
+{
+    var obj = list_all[| i];
+    /*draw_circle((obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE,
+    (obj.gx + obj.gy) * TCELLSIZETOZ / 2 + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2,
+    5, 0);*/
+    with (obj)
+    {
+        draw_surface(shadow_surf, (gx - gy) * TCELLSIZETOX + (length - width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE - shadow_xoffset,
+        (gx + gy) * TCELLSIZETOZ / 2 + (width + length - 2) * TCELLSIZETOZ / 2 - shadow_yoffset);
+    }
+}
+draw_set_blend_mode(bm_subtract);
+draw_surface(shadow_surf_mask, 0, 0);
+draw_set_blend_mode(bm_normal);
+surface_reset_target();
 </string>
           </argument>
         </arguments>
@@ -91,8 +237,14 @@ ds_list_destroy(list_all);
           <argument>
             <kind>1</kind>
             <string>ds_list_d3_sort(list_move);
-ds_list_d3_sort(list_solid);
+//ds_list_d3_sort(list_solid);
+//ds_list_copy(list_all, list_solid);
 ds_list_d3_sum(list_solid, list_move, list_all);
+
+if (keyboard_check_pressed(vk_f1))
+{
+    debug_on ^= 1;
+}
 </string>
           </argument>
         </arguments>
@@ -119,94 +271,103 @@ ds_list_d3_sum(list_solid, list_move, list_all);
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
-        draw_set_color(c_gray);
+        draw_sprite(s_place, -1, round(d3_x + (i - j) * TCELLSIZETOX), round(d3_y + (i + j) * TCELLSIZETOZ / 2));
+        /*draw_set_color(c_gray);
         draw_primitive_begin(pr_trianglefan);
         
-        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
+        draw_vertex(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2);
+        draw_vertex(d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
+        draw_vertex(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2);
+        draw_vertex(d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
         
-        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
-        
-        draw_vertex(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
-        
-        draw_vertex(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
         draw_primitive_end();
         draw_set_color(c_black);
-        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT,
-        d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
-        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT,
-        d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT);
-        draw_line(d3_x + lengthdir_x((i - 1) * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * (i - 1), ANGO)) * ASPECT,
-        d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
-        draw_line(d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * (j - 1), ANGO),
-        d3_y + (lengthdir_y((j - 1) * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT,
-        d3_x + lengthdir_x(i * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * j, ANGO),
-        d3_y + (lengthdir_y(j * d3_cell_size, -ANGO) + lengthdir_x(d3_cell_size * i, ANGO)) * ASPECT);
+        
+        draw_line(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2,
+        d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
+        draw_line(d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2,
+        d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2);
+        draw_line(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2,
+        d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
+        draw_line(d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2,
+        d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2);*/
     }
  }
+///draw shadows
+draw_set_alpha(shadow_alpha);
+draw_surface(shadow_surf, d3_x - TCELLSIZETOX * TMAPSIZE, d3_y);
+draw_set_alpha(1);
 
+
+
+
+///draw objects
 for (var i = 0; i &lt; ds_list_size(list_all); i++)
 {
     var obj = list_all[| i];
-    /*if (surface_exists(obj.surf))
+    draw_text(800, (i + 1) * 25, object_get_name(obj.object_index));
+    if (surface_exists(obj.surf))
     {
-        draw_surface_ext(obj.surf, round(-obj.sprite_xoffset * d3_mult + d3_x + 
-        lengthdir_x(obj.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * obj.gy, ANGO)),
-        round(-obj.sprite_yoffset * d3_mult + d3_y + (lengthdir_y(obj.gy * d3_cell_size, -ANGO) + 
-        lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - obj.gz * d3_mult * TCELLHIGHT),
-        d3_mult,d3_mult, 0, c_white, 1);
-    }*/
+        draw_surface(obj.surf, 
+        round(-obj.sprite_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
+        round(-obj.sprite_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT));
+    }
+    draw_set_alpha(shadow_alpha);
+    if (surface_exists(obj.area_surf))
+    {
+        draw_surface(obj.area_surf, round(-obj.shadow_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX 
+        + (obj.length - obj.width) * TCELLSIZETOX),
+        round(-obj.shadow_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 
+        - (obj.gz + obj.height) * TCELLHIGHT + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2));
+    } 
+    draw_set_alpha(1);
+}
+///draw debug
+if (debug_on)
+{
     draw_set_colour(c_red);
-    
-    var fbx, fby, ftx, fty;
-    fbx = d3_x + lengthdir_x(obj.gx * d3_cell_size, -ANGO) + lengthdir_y(d3_cell_size * obj.gy, ANGO) +
-    (obj.length - obj.width) * TCELLSIZETOX;
-    
-    fby = d3_y + (lengthdir_y(obj.gy * d3_cell_size, -ANGO) + 
-        lengthdir_x(d3_cell_size * obj.gx, ANGO)) * ASPECT - obj.gz * TCELLHIGHT +
-        (obj.width + obj.length - 2) * TCELLSIZETOZ / 2;
+    for (var i = 0; i &lt; ds_list_size(list_all); i++)
+    {
+        var obj = list_all[| i];
         
-    ftx = fbx;
-    fty = fby - TCELLHIGHT * obj.height;
-    
-    var lbx, lby, ltx, lty;
-    lbx = fbx - TCELLSIZETOX * obj.length;
-    ltx = lbx;
-    lby = fby - obj.length * TCELLSIZETOZ / 2;
-    lty = lby - TCELLHIGHT * obj.height;
-    
-    var rbx, rby, rtx, rty;
-    rbx = fbx + TCELLSIZETOX * obj.width;
-    rtx = rbx;
-    rby = fby - obj.width * TCELLSIZETOZ / 2;
-    rty = rby - TCELLHIGHT * obj.height;
-    
-    var btx, bty;
-    btx = ftx + (obj.width - obj.length) * TCELLSIZETOX;
-    bty = fty - (obj.width + obj.length) * TCELLSIZETOZ / 2;
-    
-    draw_line(fbx, fby, ftx, fty);
-    draw_line(lbx, lby, ltx, lty);
-    draw_line(fbx, fby, lbx, lby);
-    draw_line(ltx, lty, ftx, fty);
-    draw_line(rbx, rby, rtx, rty);
-    draw_line(fbx, fby, rbx, rby);
-    draw_line(rtx, rty, ftx, fty);
-    draw_line(ltx, lty, btx, bty);
-    draw_line(rtx, rty, btx, bty);
+        var fbx, fby, ftx, fty;
+
+        fbx = d3_x + (obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX;
+        fby = d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT +
+            (obj.width + obj.length - 2) * TCELLSIZETOZ / 2;
+            
+        ftx = fbx;
+        fty = fby - TCELLHIGHT * obj.height;
+        
+        var lbx, lby, ltx, lty;
+        lbx = fbx - TCELLSIZETOX * obj.length;
+        ltx = lbx;
+        lby = fby - obj.length * TCELLSIZETOZ / 2;
+        lty = lby - TCELLHIGHT * obj.height;
+        
+        var rbx, rby, rtx, rty;
+        rbx = fbx + TCELLSIZETOX * obj.width;
+        rtx = rbx;
+        rby = fby - obj.width * TCELLSIZETOZ / 2;
+        rty = rby - TCELLHIGHT * obj.height;
+        
+        var btx, bty;
+        btx = ftx + (obj.width - obj.length) * TCELLSIZETOX;
+        bty = fty - (obj.width + obj.length) * TCELLSIZETOZ / 2;
+        
+        draw_line(fbx, fby, ftx, fty);
+        draw_line(lbx, lby, ltx, lty);
+        draw_line(fbx, fby, lbx, lby);
+        draw_line(ltx, lty, ftx, fty);
+        draw_line(rbx, rby, rtx, rty);
+        draw_line(fbx, fby, rbx, rby);
+        draw_line(rtx, rty, ftx, fty);
+        draw_line(ltx, lty, btx, bty);
+        draw_line(rtx, rty, btx, bty);
+    }
 }
 
  draw_text(100, 100, "fps: " + string(fps_real));
- draw_text(100, 140, "ASPECT: " + string(ASPECT));
 </string>
           </argument>
         </arguments>
