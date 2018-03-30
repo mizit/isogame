@@ -31,6 +31,10 @@
     <sprite>sprites\s_place1</sprite>
     <sprite>sprites\s_place2</sprite>
     <sprite>sprites\s_place3</sprite>
+    <sprite>sprites\s_stump</sprite>
+    <sprite>sprites\s_wall</sprite>
+    <sprite>sprites\s_wall_l</sprite>
+    <sprite>sprites\s_g_dagger</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -59,6 +63,10 @@
       <objects name="squares">
         <object>objects\obj_sqr_parent</object>
         <object>objects\obj_sqr_small</object>
+        <object>objects\obj_g_dagger</object>
+        <object>objects\obj_stump</object>
+        <object>objects\obj_wall</object>
+        <object>objects\obj_wall_l</object>
         <object>objects\obj_sqr_tall</object>
         <object>objects\obj_sqr_big_b</object>
         <object>objects\obj_sqr_big_g</object>

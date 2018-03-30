@@ -22,14 +22,13 @@ if (instance_exists(obj_general))
                 }
             }
         }
-        
-        file_text_write_real(l_file, ds_list_size(list_pos_tile));
+        file_text_write_real(l_file, ds_list_size(list_pos_obj) + ds_list_size(list_pos_tile));
         for (var i = 0; i < ds_list_size(list_pos_tile); i++)
         {
             file_text_writeln(l_file);
             file_text_write_string(l_file, object_get_name(list_pos_tile[| i]));
             file_text_writeln(l_file);
-            file_text_write_real(l_file, instance_number(list_pos_tile[| i]) - 1);
+            file_text_write_real(l_file, instance_number(list_pos_tile[| i]) - 2);
             with(list_pos_tile[| i])
             {
                 if (gx != noone) && (gy != noone) && (gz != noone)

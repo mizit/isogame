@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>self</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -45,14 +45,34 @@ shadow_sprite = noone;
 shadow_surf = noone;
 area_surf = noone;
 area_surf_mask = noone;
-set_shadow(shadow_sprite);
-alarm[0] = 1;
+
+enum SKILL
+{
+    KNIFE = 1,
+    SHURIKEN = 2,
+    AXE = 4,
+    TWIN_KNIFE = 8,
+    SWORD = 16,
+    SCIMITAR = 32,
+    MACE = 64,
+    TWIN_SWORD = 128,
+    HEAL = 256,
+    SLOW = 512,
+    DAMAGE = 1024,
+    FREEZE = 2048,
+    ZAP = 4096,
+    SAVE = 8192,
+    REVEAL = 16384,
+    UNLOCK = 32768
+}
+
+content = noone;
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="1" enumb="0">
+    <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -69,56 +89,14 @@ alarm[0] = 1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>surface_free(surf);
-surface_free(shadow_surf);
-surface_free(area_surf);
-surface_free(area_surf_mask);
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="2" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>set_shadow(shadow_sprite);
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///forbidden
+            <string>if (cube_collision(id, obj_gg))
+{
+    obj_gg.skill |= content;
+    mw_set(content);
+    ds_list_delete_value(obj_general.list_solid, id);
+    ds_list_delete_value(obj_general.list_all, id);
+    instance_destroy();
+}
 </string>
           </argument>
         </arguments>

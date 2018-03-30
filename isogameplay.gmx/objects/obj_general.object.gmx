@@ -28,32 +28,17 @@
             <string>list_solid = ds_list_create();    
 list_move = ds_list_create();    
 list_all = ds_list_create();
+list_tile = ds_list_create();
+floor_grid = ds_grid_create(TMAPSIZE, TMAPSIZE);
+ds_grid_set_region(floor_grid, 0, 0, TMAPSIZE, TMAPSIZE, noone);
 
 map_load("2000x2000");
 
 gg = instance_create(0, 0, obj_gg);
-gg.gx = 2;
-gg.gy = 2;
-gg.gz = 0;
+gg.gx = 5;
+gg.gy = 6;
+gg.gz = 6;
 ds_list_add(list_move, gg);
-
-table = instance_create(0, 0, obj_table);
-table.gx = 5;
-table.gy = 5;
-table.gz = 2;
-ds_list_add(list_move, table);
-
-table = instance_create(0, 0, obj_table);
-table.gx = 6;
-table.gy = 6;
-table.gz = 2;
-ds_list_add(list_move, table);
-
-table = instance_create(0, 0, obj_table);
-table.gx = 8;
-table.gy = 11;
-table.gz = 6;
-ds_list_add(list_move, table);
 
 ANGO = 45;
 
@@ -75,12 +60,15 @@ for(var i = 0; i &lt; TMAPSIZE; i++)
 {
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
-        draw_primitive_begin(pr_trianglefan);
-        draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j) * TCELLSIZETOZ / 2);
-        draw_vertex((i - j - 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
-        draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 2) * TCELLSIZETOZ / 2);
-        draw_vertex((i - j + 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
-        draw_primitive_end();
+        if(floor_grid[# i, j] != noone)
+        {
+            draw_primitive_begin(pr_trianglefan);
+            draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j) * TCELLSIZETOZ / 2);
+            draw_vertex((i - j - 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
+            draw_vertex((i - j) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 2) * TCELLSIZETOZ / 2);
+            draw_vertex((i - j + 1) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE, (i + j - 1) * TCELLSIZETOZ / 2);
+            draw_primitive_end();
+        }
     }
 }
 draw_set_blend_mode(bm_normal);
@@ -110,8 +98,10 @@ surface_reset_target();
             <string>ds_list_destroy(list_solid);
 ds_list_destroy(list_move);
 ds_list_destroy(list_all);
+ds_list_destroy(list_tile);
 surface_free(shadow_surf);
 surface_free(shadow_surf_mask);
+ds_grid_destroy(floor_grid);
 </string>
           </argument>
         </arguments>
@@ -271,28 +261,21 @@ if (keyboard_check_pressed(vk_f1))
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
-        draw_sprite(s_place, -1, round(d3_x + (i - j) * TCELLSIZETOX), round(d3_y + (i + j) * TCELLSIZETOZ / 2));
-        /*draw_set_color(c_gray);
-        draw_primitive_begin(pr_trianglefan);
-        
-        draw_vertex(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2);
-        draw_vertex(d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
-        draw_vertex(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2);
-        draw_vertex(d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
-        
-        draw_primitive_end();
-        draw_set_color(c_black);
-        
-        draw_line(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2,
-        d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
-        draw_line(d3_x + (i - j - 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2,
-        d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2);
-        draw_line(d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j - 2) * TCELLSIZETOZ / 2,
-        d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2);
-        draw_line(d3_x + (i - j + 1) * TCELLSIZETOX, d3_y + (i + j - 1) * TCELLSIZETOZ / 2,
-        d3_x + (i - j) * TCELLSIZETOX, d3_y + (i + j) * TCELLSIZETOZ / 2);*/
+        if( floor_grid[# i, j])
+        {
+            draw_sprite(floor_grid[# i, j].sprite_index, -1, round(d3_x + (i - j) * TCELLSIZETOX), round(d3_y + (i + j) * TCELLSIZETOZ / 2));
+        }
     }
  }
+ 
+for (var i = 0; i &lt; ds_list_size(list_tile); i++)
+{
+    var obj = list_tile[| i];
+    draw_sprite(obj.sprite_index, -1, 
+        round(d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
+        round(d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2));
+}
+
 ///draw shadows
 draw_set_alpha(shadow_alpha);
 draw_surface(shadow_surf, d3_x - TCELLSIZETOX * TMAPSIZE, d3_y);

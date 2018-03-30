@@ -7,7 +7,7 @@ for (var i = 0; i < ds_list_size(l_list); i++)
     var A = l_list[| i];
     surface_clear(A.surf);
     surface_set_target(A.surf);
-    draw_sprite(A.sprite_index, -1, A.sprite_xoffset, A.sprite_yoffset);
+    draw_sprite(A.sprite_index, A.image_index, A.sprite_xoffset, A.sprite_yoffset);
     surface_reset_target();
 }
 

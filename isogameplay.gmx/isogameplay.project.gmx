@@ -3,11 +3,11 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="4" name="datafiles">
+  <datafiles number="8" name="datafiles">
     <datafile>
       <name>2000x2000</name>
       <exists>-1</exists>
-      <size>246</size>
+      <size>1617</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -47,6 +47,16 @@
     <sprite>sprites\s_place</sprite>
     <sprite>sprites\sprite20</sprite>
     <sprite>sprites\s_big_place</sprite>
+    <sprite>sprites\s_place1</sprite>
+    <sprite>sprites\s_place2</sprite>
+    <sprite>sprites\s_place3</sprite>
+    <sprite>sprites\s_wall</sprite>
+    <sprite>sprites\s_wall_l</sprite>
+    <sprite>sprites\s_g_dagger</sprite>
+    <sprite>sprites\s_stump</sprite>
+    <sprite>sprites\s_noone_shadow</sprite>
+    <sprite>sprites\s_bullet_knife</sprite>
+    <sprite>sprites\s_small_shadow</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -62,6 +72,11 @@
     <script>scripts\ds_list_d3_surfaces.gml</script>
     <script>scripts\set_shadow.gml</script>
     <script>scripts\push.gml</script>
+    <scripts name="magik&amp;weapon">
+      <script>scripts\scr_knife.gml</script>
+      <script>scripts\mw_get_script.gml</script>
+      <script>scripts\mw_set.gml</script>
+    </scripts>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
@@ -69,6 +84,7 @@
       <object>objects\obj_sqr_parent</object>
       <object>objects\obj_solid</object>
       <object>objects\obj_move</object>
+      <object>objects\obj_pick_up</object>
       <object>objects\obj_sqr_small</object>
       <object>objects\obj_sqr_tall</object>
       <object>objects\obj_sqr_big_b</object>
@@ -78,6 +94,19 @@
       <object>objects\obj_sqr_wide_right</object>
       <object>objects\obj_gg</object>
       <object>objects\obj_table</object>
+      <object>objects\obj_invisible_wall</object>
+      <object>objects\obj_g_dagger</object>
+      <object>objects\obj_stump</object>
+      <object>objects\obj_bullet</object>
+      <object>objects\obj_knife</object>
+    </objects>
+    <objects name="tiles">
+      <object>objects\obj_tile_parent</object>
+      <object>objects\obj_tile1</object>
+      <object>objects\obj_tile2</object>
+      <object>objects\obj_tile3</object>
+      <object>objects\obj_wall</object>
+      <object>objects\obj_wall_l</object>
     </objects>
   </objects>
   <rooms name="rooms">
