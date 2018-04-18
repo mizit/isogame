@@ -63,15 +63,25 @@ for (var i = 0; i &lt; instance_number(obj_sqr_parent); i++)
     {
         if (cube_collision(id, tmp))
         {
-            if (dgz &lt; 0)
+            var tmp_dgz = dgz;
+            dgz = 0;
+            if (tmp_dgz &lt; 0)
             {
                 gz = tmp.gz + tmp.height;
+                if (object_is_ancestor(tmp.object_index, obj_sqr_path))
+                {
+                    push(id, tmp.dx, tmp.dy);
+                }
+                if (object_is_ancestor(tmp.object_index, obj_forcer))
+                {
+                    push(id, tmp.dx, tmp.dy);
+                    dgz = min(0, dgz + tmp.dz);
+                }
             }
             else
             {
                 gz = tmp.gz - height;
             }
-            dgz = 0;
         }
     }
 }

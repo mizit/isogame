@@ -5,7 +5,7 @@ if (instance_number(obj_knife) >= 3)
     return 0;
 }
 var tmp = instance_create(0, 0, obj_knife);
-tmp.image_index = obj_gg.last_direction;
+tmp.my_dir = obj_gg.last_direction;
 switch(obj_gg.last_direction)
 {
     case DIRECTION.LEFT:

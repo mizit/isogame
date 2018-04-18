@@ -35,14 +35,14 @@ for (var i = 0; i < ds_list_size(l_list); i++)
             surface_set_target(A.surf);
             draw_set_blend_mode(bm_subtract);
             draw_surface(B.surf, bx - ax, by - ay);
-            draw_set_colour(c_black);
+            //draw_set_colour(c_black);
             //draw_rectangle(0, 0, 20, 20, 0);
             draw_set_blend_mode(bm_normal);
             surface_reset_target();
             
             surface_set_target(A.area_surf);
             draw_set_blend_mode(bm_subtract);
-            draw_surface(B.surf, bx - ax, by - ay);
+            draw_surface(B.surf, bx - ax, by - ay + 1.5);
             draw_set_blend_mode(bm_normal);
             surface_reset_target();
         }

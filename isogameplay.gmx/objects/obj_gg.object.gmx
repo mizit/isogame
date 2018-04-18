@@ -41,6 +41,19 @@ key_jump = vk_space;
 weapon_script = noone;
 magick_script = noone;
 last_direction = DIRECTION.RIGHT;
+
+hp_max = 4;
+magick_max = 4;
+hp = 0;
+magick = 4;
+
+hp_x = 30;
+hp_y = 30;
+hp_step = 32;
+
+magick_x = 30;
+magick_y = 62;
+magick_step = 32;
 </string>
           </argument>
         </arguments>
@@ -87,8 +100,8 @@ last_direction = DIRECTION.RIGHT;
           <argument>
             <kind>1</kind>
             <string>event_inherited();
-push(id, (keyboard_check(key_right) - keyboard_check(key_left)) * other.gspeed,
-(keyboard_check(key_down) - keyboard_check(key_up)) * other.gspeed);
+push_3d(id, (keyboard_check(key_right) - keyboard_check(key_left)) * other.gspeed,
+(keyboard_check(key_down) - keyboard_check(key_up)) * other.gspeed, 0);
 
 if (keyboard_check(key_right))
 {
@@ -132,6 +145,59 @@ if (keyboard_check_pressed(key_magick))
         </arguments>
       </action>
     </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>for (var i = 0; i &lt; hp_max; i+=2)
+{
+    if ((i + 2) &lt;= hp)
+    {
+        draw_sprite(s_hp_full, -1, hp_x + hp_step * i / 2, hp_y);
+    }
+    else if ((i + 1) == hp)
+    {
+        draw_sprite(s_hp_med, -1, hp_x + hp_step * i / 2, hp_y);
+    }
+    else
+    {
+        draw_sprite(s_maghp_empty, -1, hp_x + hp_step * i / 2, hp_y);
+    }
+}
+
+for (var i = 0; i &lt; magick_max; i+=2)
+{
+    if ((i + 2) &lt;= magick)
+    {
+        draw_sprite(s_mag_full, -1, magick_x + magick_step * i / 2, magick_y);
+    }
+    else if ((i + 1) == magick)
+    {
+        draw_sprite(s_mag_med, -1, magick_x + magick_step * i / 2, magick_y);
+    }
+    else
+    {
+        draw_sprite(s_maghp_empty, -1, magick_x + magick_step * i / 2, magick_y);
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
@@ -150,9 +216,7 @@ if (keyboard_check_pressed(key_magick))
           <argument>
             <kind>1</kind>
             <string>event_inherited();
-draw_text(200, 25, gx);
-draw_text(200, 50, gy);
-draw_text(200, 75, gz);
+
 </string>
           </argument>
         </arguments>

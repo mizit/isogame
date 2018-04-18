@@ -3,11 +3,11 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="8" name="datafiles">
+  <datafiles number="9" name="datafiles">
     <datafile>
       <name>2000x2000</name>
       <exists>-1</exists>
-      <size>1617</size>
+      <size>1638</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -38,6 +38,10 @@
     <sprite>sprites\sprite7</sprite>
     <sprite>sprites\sprite8</sprite>
     <sprite>sprites\sBLUE</sprite>
+    <sprite>sprites\s_sqr_yel</sprite>
+    <sprite>sprites\s_forcer_up</sprite>
+    <sprite>sprites\s_weak</sprite>
+    <sprite>sprites\s_sqr_lift</sprite>
     <sprite>sprites\s_table</sprite>
     <sprite>sprites\sRED</sprite>
     <sprite>sprites\sprite10</sprite>
@@ -57,6 +61,15 @@
     <sprite>sprites\s_noone_shadow</sprite>
     <sprite>sprites\s_bullet_knife</sprite>
     <sprite>sprites\s_small_shadow</sprite>
+    <sprite>sprites\s_heal</sprite>
+    <sprites name="HUD">
+      <sprite>sprites\s_hp_full</sprite>
+      <sprite>sprites\s_mag_full</sprite>
+      <sprite>sprites\s_hp_med</sprite>
+      <sprite>sprites\s_mag_med</sprite>
+      <sprite>sprites\s_maghp_empty</sprite>
+    </sprites>
+    <sprite>sprites\s_sphere</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -66,16 +79,30 @@
     <script>scripts\ds_list_d3_sort.gml</script>
     <script>scripts\map_load.gml</script>
     <script>scripts\sqr_set_size.gml</script>
-    <script>scripts\point_in_cube.gml</script>
-    <script>scripts\cube_collision.gml</script>
     <script>scripts\ds_list_d3_sum.gml</script>
     <script>scripts\ds_list_d3_surfaces.gml</script>
     <script>scripts\set_shadow.gml</script>
-    <script>scripts\push.gml</script>
     <scripts name="magik&amp;weapon">
       <script>scripts\scr_knife.gml</script>
       <script>scripts\mw_get_script.gml</script>
       <script>scripts\mw_set.gml</script>
+      <script>scripts\scr_heal.gml</script>
+    </scripts>
+    <scripts name="cube moving">
+      <script>scripts\push.gml</script>
+      <script>scripts\push_3d.gml</script>
+      <script>scripts\weak_move.gml</script>
+      <script>scripts\cube_collision.gml</script>
+      <script>scripts\cube_meeting.gml</script>
+      <script>scripts\bullet_collision.gml</script>
+      <script>scripts\point_in_cube.gml</script>
+      <script>scripts\point_3d_create.gml</script>
+      <script>scripts\cube_path_free.gml</script>
+      <script>scripts\cube_path_height.gml</script>
+      <script>scripts\cube_path_length.gml</script>
+      <script>scripts\cube_path_width.gml</script>
+      <script>scripts\cling_of_x.gml</script>
+      <script>scripts\cling_of_y.gml</script>
     </scripts>
   </scripts>
   <objects name="objects">
@@ -85,6 +112,10 @@
       <object>objects\obj_solid</object>
       <object>objects\obj_move</object>
       <object>objects\obj_pick_up</object>
+      <object>objects\obj_sqr_path</object>
+      <object>objects\obj_bullet</object>
+      <object>objects\obj_forcer</object>
+      <object>objects\obj_invisible</object>
       <object>objects\obj_sqr_small</object>
       <object>objects\obj_sqr_tall</object>
       <object>objects\obj_sqr_big_b</object>
@@ -97,8 +128,13 @@
       <object>objects\obj_invisible_wall</object>
       <object>objects\obj_g_dagger</object>
       <object>objects\obj_stump</object>
-      <object>objects\obj_bullet</object>
       <object>objects\obj_knife</object>
+      <object>objects\obj_heal</object>
+      <object>objects\obj_sqr_yel</object>
+      <object>objects\obj_weak</object>
+      <object>objects\obj_lift</object>
+      <object>objects\obj_forcer_up</object>
+      <object>objects\obj_sphere</object>
     </objects>
     <objects name="tiles">
       <object>objects\obj_tile_parent</object>

@@ -31,8 +31,11 @@ enum DIRECTION
     RIGHT = 0,
     UP = 1,
     LEFT = 2,
-    DOWN = 3
+    DOWN = 3,
+    TOP = 4,
+    BOTTOM = 5
 }
+my_dir = DIRECTION.RIGHT;
 image_speed = 0;
 gspeed = 0;
 set_shadow(s_small_shadow);
@@ -64,6 +67,34 @@ set_shadow(s_small_shadow);
         </arguments>
       </action>
     </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (gspeed == 0)
+{
+    ds_list_delete_value(obj_general.list_move, id);
+    ds_list_delete_value(obj_general.list_all, id);
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -81,19 +112,20 @@ set_shadow(s_small_shadow);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (image_index == DIRECTION.RIGHT)
+            <string>image_index = my_dir;
+if (my_dir == DIRECTION.RIGHT)
 {
     gx += gspeed;
 }
-if (image_index == DIRECTION.LEFT)
+if (my_dir == DIRECTION.LEFT)
 {
     gx -= gspeed;
 }
-if (image_index == DIRECTION.UP)
+if (my_dir == DIRECTION.UP)
 {
     gy -= gspeed;
 }
-if (image_index == DIRECTION.DOWN)
+if (my_dir == DIRECTION.DOWN)
 {
     gy += gspeed;
 }
@@ -103,22 +135,48 @@ with (obj_sqr_parent)
 {
     if (id != other) &amp;&amp; (object_index != obj_gg)
     {
-        if (cube_collision(id, other))
+        if (bullet_collision(id, other))
         {
             dead_test = 1;
+            switch (other.my_dir)
+            {
+                case DIRECTION.RIGHT:
+                var px = id.gx - other.length;
+                other.gspeed = px - (other.gx - other.gspeed);
+                other.gx = px;
+                break;
+                case DIRECTION.LEFT:
+                var px = id.gx + (id.length - 1) + other.length * 2;
+                other.gspeed = (other.gx + other.gspeed) - px;
+                other.gx = px;
+                break;
+                case DIRECTION.UP:
+                var py = id.gy + (id.width - 1) + other.width * 2;
+                other.gspeed = (other.gy + other.gspeed) - py;
+                other.gy = py;
+                break;
+                case DIRECTION.DOWN:
+                var py = id.gy - other.width;
+                other.gspeed = py - (other.gy - other.gspeed);
+                other.gy = py;
+                break;
+            }
         }
     }
 }
 if ((gx &lt;= 0) || (gx &gt;= TMAPSIZE) || 
     (gy &lt;= 0) || (gy &gt;= TMAPSIZE))
 {  
+    gx = max(min(gx, TMAPSIZE), 0);
+    gy = max(min(gy, TMAPSIZE), 0);
     dead_test = 1;
 }
 if (dead_test)
 {
-    ds_list_delete_value(obj_general.list_move, id);
-    ds_list_delete_value(obj_general.list_all, id);
-    instance_destroy();
+    gspeed = 0;
+    //ds_list_delete_value(obj_general.list_move, id);
+    //ds_list_delete_value(obj_general.list_all, id);
+    //instance_destroy();
 }
 </string>
           </argument>

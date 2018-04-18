@@ -6,7 +6,8 @@ var l_dy = argument2;
 enum RET
 {
     X = 1,
-    Y = 2
+    Y = 2,
+    Z = 4
 }
 var l_retval = 0;       //return 1 if x-push is possible, 2 if y-push, 3 if all push, if not - 0
 

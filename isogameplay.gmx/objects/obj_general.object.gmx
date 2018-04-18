@@ -40,6 +40,67 @@ gg.gy = 6;
 gg.gz = 6;
 ds_list_add(list_move, gg);
 
+table = instance_create(0, 0, obj_table);
+table.gx = 6;
+table.gy = 6;
+table.gz = 6;
+ds_list_add(list_move, table);
+table = instance_create(0, 0, obj_table);
+table.gx = 7;
+table.gy = 8;
+table.gz = 6;
+ds_list_add(list_move, table);
+
+path_sqr = instance_create(0, 0, obj_sqr_yel);
+path_sqr.gx = 4;
+path_sqr.gy = 1;
+path_sqr.gz = 4;
+path_sqr.gspeed = 0.1;
+with (path_sqr)
+{
+    ds_list_add(path, point_3d_create(gx, gy, gz),
+    point_3d_create(gx + 2, gy, gz), point_3d_create(gx + 2, gy + 2, gz),
+    point_3d_create(gx, gy + 2, gz));
+    cycled = 1;
+    pusher = 1;
+}
+ds_list_add(list_move, path_sqr);
+
+path_sqr = instance_create(0, 0, obj_lift);
+path_sqr.gx = 3;
+path_sqr.gy = 7;
+path_sqr.gz = 1;
+path_sqr.gspeed = 0.1;
+path_sqr.pusher = 1;
+path_sqr.cycled = 1;
+ds_list_add(list_move, path_sqr);
+
+path_sqr = instance_create(0, 0, obj_weak);
+path_sqr.gx = 6;
+path_sqr.gy = 2;
+path_sqr.gz = 0;
+path_sqr.gspeed = 0.1;
+path_sqr.cycled = 1;
+cube_path_width(path_sqr, 8);
+ds_list_add(list_move, path_sqr);
+
+forcer = instance_create(0, 0, obj_forcer_up);
+forcer.gx = 1;
+forcer.gy = 9;
+forcer.gz = 0;
+ds_list_add(list_solid, forcer);
+forcer = instance_create(0, 0, obj_forcer_up);
+forcer.gx = 1;
+forcer.gy = 8;
+forcer.gz = 0;
+ds_list_add(list_solid, forcer);
+
+sphere = instance_create(0, 0, obj_sphere);
+sphere.gx = 3;
+sphere.gy = 8;
+sphere.gz = 0;
+ds_list_add(list_solid, sphere);
+
 ANGO = 45;
 
 show_x = 500;
@@ -196,8 +257,11 @@ for (var i = 0; i &lt; ds_list_size(list_all); i++)
     5, 0);*/
     with (obj)
     {
-        draw_surface(shadow_surf, (gx - gy) * TCELLSIZETOX + (length - width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE - shadow_xoffset,
-        (gx + gy) * TCELLSIZETOZ / 2 + (width + length - 2) * TCELLSIZETOZ / 2 - shadow_yoffset);
+        if (visible)
+        {
+            draw_surface(shadow_surf, (gx - gy) * TCELLSIZETOX + (length - width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE - shadow_xoffset,
+            (gx + gy) * TCELLSIZETOZ / 2 + (width + length - 2) * TCELLSIZETOZ / 2 - shadow_yoffset);
+        }
     }
 }
 draw_set_blend_mode(bm_subtract);
@@ -257,7 +321,7 @@ if (keyboard_check_pressed(vk_f1))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///draw 3d substrate
+            <string>///draw floor
  for(var i = 0; i &lt; TMAPSIZE; i++){
     for (var j = 0; j &lt; TMAPSIZE; j++)
     {
@@ -268,12 +332,16 @@ if (keyboard_check_pressed(vk_f1))
     }
  }
  
+///draw decor
 for (var i = 0; i &lt; ds_list_size(list_tile); i++)
 {
     var obj = list_tile[| i];
-    draw_sprite(obj.sprite_index, -1, 
+    if (obj.visible)
+    {
+        draw_sprite(obj.sprite_index, -1, 
         round(d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
         round(d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2));
+    }
 }
 
 ///draw shadows
@@ -289,21 +357,24 @@ for (var i = 0; i &lt; ds_list_size(list_all); i++)
 {
     var obj = list_all[| i];
     draw_text(800, (i + 1) * 25, object_get_name(obj.object_index));
-    if (surface_exists(obj.surf))
+    if (obj.visible)
     {
-        draw_surface(obj.surf, 
-        round(-obj.sprite_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
-        round(-obj.sprite_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT));
+        if (surface_exists(obj.surf))
+        {
+            draw_surface(obj.surf, 
+            round(-obj.sprite_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
+            round(-obj.sprite_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT));
+        }
+        draw_set_alpha(shadow_alpha);
+        if (surface_exists(obj.area_surf))
+        {
+            draw_surface(obj.area_surf, round(-obj.shadow_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX 
+            + (obj.length - obj.width) * TCELLSIZETOX),
+            round(-obj.shadow_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 
+            - (obj.gz + obj.height) * TCELLHIGHT + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2));
+        } 
+        draw_set_alpha(1);
     }
-    draw_set_alpha(shadow_alpha);
-    if (surface_exists(obj.area_surf))
-    {
-        draw_surface(obj.area_surf, round(-obj.shadow_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX 
-        + (obj.length - obj.width) * TCELLSIZETOX),
-        round(-obj.shadow_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 
-        - (obj.gz + obj.height) * TCELLHIGHT + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2));
-    } 
-    draw_set_alpha(1);
 }
 ///draw debug
 if (debug_on)
@@ -351,6 +422,9 @@ if (debug_on)
 }
 
  draw_text(100, 100, "fps: " + string(fps_real));
+ draw_text(100, 125, "GG gy: " + string(obj_gg.gy));
+ draw_text(100, 150, "weak gy: " + string(obj_weak.gy));
+ draw_text(100, 175, "difference: " + string(obj_weak.gy - obj_gg.gy));
 </string>
           </argument>
         </arguments>

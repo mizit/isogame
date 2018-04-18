@@ -17,39 +17,3 @@ if (abs(l_x2 - l_x1) < ((l_cube1.length + l_cube2.length) / 2)) &&
     return true;
 }
 return false;
-
-/*if (point_in_cube(l_cube1.gx, l_cube1.gy, l_cube1.gz, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx, l_cube1.gy, l_cube1.gz + l_cube1.height, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx, l_cube1.gy + l_cube1.width, l_cube1.gz, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx, l_cube1.gy + l_cube1.width, l_cube1.gz + l_cube1.height, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx + l_cube1.length, l_cube1.gy, l_cube1.gz, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx + l_cube1.length, l_cube1.gy, l_cube1.gz + l_cube1.height, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx + l_cube1.length, l_cube1.gy + l_cube1.width, l_cube1.gz, l_cube2))
-{
-    return true;
-}
-if (point_in_cube(l_cube1.gx + l_cube1.length, l_cube1.gy + l_cube1.width, l_cube1.gz + l_cube1.height, l_cube2))
-{
-    return true;
-}
-
-return false;*/
-

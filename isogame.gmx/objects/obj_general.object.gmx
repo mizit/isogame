@@ -31,7 +31,7 @@ list_pos_tile = ds_list_create();
 list_set_tile = ds_list_create();
 
 ds_list_add(list_pos_obj, obj_sqr_small, obj_sqr_tall, obj_sqr_wide_left, obj_sqr_wide_right,
-        obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r, obj_wall, obj_wall_l, obj_stump, obj_g_dagger);
+        obj_sqr_big_b, obj_sqr_big_g, obj_sqr_big_r, obj_wall, obj_wall_l, obj_stump, obj_g_dagger, obj_heal);
 ds_list_add(list_pos_tile, obj_tile1, obj_tile2, obj_tile3);
         
 for (var i = 0; i &lt; ds_list_size(list_pos_obj); i++)
