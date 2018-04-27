@@ -23,10 +23,11 @@ with (l_obj)
         else
         {
             var check_collision = 0;
+            var minx = 10000;
             for (var i = 0; i < instance_number(obj_sqr_parent); i++)
             {
                 var tmp = instance_find(obj_sqr_parent, i);
-                if (tmp != id)
+                if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))
                     {
@@ -39,16 +40,18 @@ with (l_obj)
                             }
                             else
                             {
+                                //minx = min(minx, gap_of_x(id, tmp));
                                 cling_of_x(id, tmp);
                                 //gx = oldx;
-                                break;
+                                //break;
                             }
                         }
                         else
                         {
+                            //minx = min(minx, gap_of_x(id, tmp));
                             cling_of_x(id, tmp);
                             //gx = oldx;
-                            break;
+                            //break;
                         }
                     }
                 }
@@ -57,6 +60,10 @@ with (l_obj)
             {
                 l_retval |= RET.X;
             }
+            /*else
+            {
+                gx += minx;
+            }*/
         }
     }
     else
@@ -76,7 +83,7 @@ with (l_obj)
             for (var i = 0; i < instance_number(obj_sqr_parent); i++)
             {
                 var tmp = instance_find(obj_sqr_parent, i);
-                if (tmp != id)
+                if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))
                     {
@@ -91,14 +98,14 @@ with (l_obj)
                             {
                                 cling_of_y(id, tmp);
                                 //gy = oldy;
-                                break;
+                                //break;
                             }
                         }
                         else
                         {
                             cling_of_y(id, tmp);
                             //gy = oldy;
-                            break;
+                            //break;
                         }
                     }
                 }
@@ -126,7 +133,7 @@ with (l_obj)
             for (var i = 0; i < instance_number(obj_sqr_parent); i++)
             {
                 var tmp = instance_find(obj_sqr_parent, i);
-                if (tmp != id)
+                if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))
                     {

@@ -101,6 +101,23 @@ sphere.gy = 8;
 sphere.gz = 0;
 ds_list_add(list_solid, sphere);
 
+apple = instance_create(0, 0, obj_apple);
+apple.gx = 3;
+apple.gy = 9;
+apple.gz = 0;
+ds_list_add(list_solid, apple);
+
+bottle = instance_create(0, 0, obj_green_bottle);
+bottle.gx = 5;
+bottle.gy = 12;
+bottle.gz = 0;
+ds_list_add(list_solid, bottle);
+bottle = instance_create(0, 0, obj_blue_bottle);
+bottle.gx = 5;
+bottle.gy = 13;
+bottle.gz = 0;
+ds_list_add(list_solid, bottle);
+
 ANGO = 45;
 
 show_x = 500;
@@ -356,7 +373,7 @@ draw_set_alpha(1);
 for (var i = 0; i &lt; ds_list_size(list_all); i++)
 {
     var obj = list_all[| i];
-    draw_text(800, (i + 1) * 25, object_get_name(obj.object_index));
+    //draw_text(800, (i + 1) * 25, object_get_name(obj.object_index));
     if (obj.visible)
     {
         if (surface_exists(obj.surf))

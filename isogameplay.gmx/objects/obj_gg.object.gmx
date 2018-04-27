@@ -43,7 +43,7 @@ magick_script = noone;
 last_direction = DIRECTION.RIGHT;
 
 hp_max = 4;
-magick_max = 4;
+magick_max = 12;
 hp = 0;
 magick = 4;
 
@@ -162,13 +162,14 @@ if (keyboard_check_pressed(key_magick))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>for (var i = 0; i &lt; hp_max; i+=2)
+            <string>//Draw hp
+for (var i = 0; i &lt; hp_max; i+=2)
 {
     if ((i + 2) &lt;= hp)
     {
         draw_sprite(s_hp_full, -1, hp_x + hp_step * i / 2, hp_y);
     }
-    else if ((i + 1) == hp)
+    else if ((i + 1) &lt;= hp)
     {
         draw_sprite(s_hp_med, -1, hp_x + hp_step * i / 2, hp_y);
     }
@@ -177,20 +178,51 @@ if (keyboard_check_pressed(key_magick))
         draw_sprite(s_maghp_empty, -1, hp_x + hp_step * i / 2, hp_y);
     }
 }
-
+//Draw magick
 for (var i = 0; i &lt; magick_max; i+=2)
 {
     if ((i + 2) &lt;= magick)
     {
         draw_sprite(s_mag_full, -1, magick_x + magick_step * i / 2, magick_y);
     }
-    else if ((i + 1) == magick)
+    else if ((i + 1) &lt;= magick)
     {
         draw_sprite(s_mag_med, -1, magick_x + magick_step * i / 2, magick_y);
     }
     else
     {
         draw_sprite(s_maghp_empty, -1, magick_x + magick_step * i / 2, magick_y);
+    }
+}
+//Draw buffs
+var bf_x = window_get_width() - 25;
+var bf_y = 50;
+var bf_x_step = -40;
+var bf_y_step = 50;
+var bf_max_str = 5;
+for (var i = 0; i &lt; ds_list_size(buff_list); i++)
+{
+    var tmp_buff = buff_list[| i];
+    var tmp_spr = tmp_buff[| BUFF.SPRITE];
+    if (sprite_exists(tmp_spr))
+    {
+        if (tmp_buff[| BUFF.BASE_TIME] &gt; 0)
+        {
+            draw_sprite_ext(tmp_spr, -1, 
+            bf_x + (bf_x_step % bf_max_str),
+            bf_y + floor(i / bf_max_str) * bf_y_step, 1, 1, 0, c_white, 0.3);
+            var bf_y_edge = sprite_get_height(tmp_spr) * (tmp_buff[| BUFF.TIME] / tmp_buff[| BUFF.BASE_TIME]);
+            draw_sprite_part(tmp_spr, -1, 0, sprite_get_height(tmp_spr) - bf_y_edge, sprite_get_width(tmp_spr), 
+            bf_y_edge, bf_x + (bf_x_step % bf_max_str) - sprite_get_xoffset(tmp_spr),
+            bf_y + floor(i / bf_max_str) * bf_y_step + sprite_get_height(tmp_spr) - bf_y_edge - 
+            sprite_get_yoffset(tmp_spr));
+        }
+        else
+        {
+            draw_sprite(tmp_spr, -1, 
+            bf_x + (bf_x_step % bf_max_str),
+            bf_y + floor(i / bf_max_str) * bf_y_step);
+        }
     }
 }
 </string>

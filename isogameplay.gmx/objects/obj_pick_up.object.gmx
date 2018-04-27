@@ -66,7 +66,49 @@ enum SKILL
     UNLOCK = 32768
 }
 
-content = noone;
+enum CONTENT_TYPE
+{
+    SKILL,
+    BUFF,
+    ITEM
+}
+
+content_list = ds_list_create();
+//content_type = CONTENT_TYPE.SKILL;
+//content = noone;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>for (var i = 0; i &lt; ds_list_size(content_list); i++)
+{
+    var tmp_cont = content_list[| i];
+    if (tmp_cont[| CONTENT.TYPE] == CONTENT_TYPE.BUFF)
+    {
+        ds_list_destroy(tmp_cont[| CONTENT.CONT]);
+    }
+    ds_list_destroy(content_list[| i]);
+}
+ds_list_destroy(content_list);
+
 </string>
           </argument>
         </arguments>
@@ -95,7 +137,7 @@ content = noone;
         </arguments>
       </action>
     </event>
-    <event eventtype="3" enumb="0">
+    <event eventtype="3" enumb="1">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -114,8 +156,20 @@ content = noone;
             <kind>1</kind>
             <string>if (cube_collision(id, obj_gg))
 {
-    obj_gg.skill |= content;
-    mw_set(content);
+    while(ds_list_size(content_list) &gt; 0)
+    {
+        var tmp_cont = content_list[| 0];
+        if (tmp_cont[| CONTENT.TYPE] == CONTENT_TYPE.SKILL)
+        {
+            obj_gg.skill |= tmp_cont[| CONTENT.CONT];
+            mw_set(tmp_cont[| CONTENT.CONT]);
+        }
+        if (tmp_cont[| CONTENT.TYPE] == CONTENT_TYPE.BUFF)
+        {
+            buff_add(obj_gg, tmp_cont[| CONTENT.CONT]);
+        }
+        ds_list_delete(content_list, 0);
+    }
     ds_list_delete_value(obj_general.list_solid, id);
     ds_list_delete_value(obj_general.list_all, id);
     instance_destroy();

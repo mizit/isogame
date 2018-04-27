@@ -70,6 +70,9 @@
       <sprite>sprites\s_maghp_empty</sprite>
     </sprites>
     <sprite>sprites\s_sphere</sprite>
+    <sprite>sprites\s_apple</sprite>
+    <sprite>sprites\s_blue_bottle</sprite>
+    <sprite>sprites\s_green_bottle</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -87,10 +90,24 @@
       <script>scripts\mw_get_script.gml</script>
       <script>scripts\mw_set.gml</script>
       <script>scripts\scr_heal.gml</script>
+      <script>scripts\hp_add.gml</script>
+      <script>scripts\magick_add.gml</script>
+      <script>scripts\magick_null.gml</script>
+      <scripts name="buffs">
+        <script>scripts\buff_create.gml</script>
+        <script>scripts\buff_apple_effect.gml</script>
+        <script>scripts\buff_create_apple.gml</script>
+        <script>scripts\buff_add.gml</script>
+        <script>scripts\buff_magick_restore.gml</script>
+        <script>scripts\buff_hp_restore.gml</script>
+        <script>scripts\buff_getting_heal.gml</script>
+      </scripts>
+      <script>scripts\content_create.gml</script>
     </scripts>
     <scripts name="cube moving">
       <script>scripts\push.gml</script>
       <script>scripts\push_3d.gml</script>
+      <script>scripts\push_3d_backup.gml</script>
       <script>scripts\weak_move.gml</script>
       <script>scripts\cube_collision.gml</script>
       <script>scripts\cube_meeting.gml</script>
@@ -103,6 +120,8 @@
       <script>scripts\cube_path_width.gml</script>
       <script>scripts\cling_of_x.gml</script>
       <script>scripts\cling_of_y.gml</script>
+      <script>scripts\gap_of_x.gml</script>
+      <script>scripts\gap_of_y.gml</script>
     </scripts>
   </scripts>
   <objects name="objects">
@@ -130,11 +149,14 @@
       <object>objects\obj_stump</object>
       <object>objects\obj_knife</object>
       <object>objects\obj_heal</object>
+      <object>objects\obj_blue_bottle</object>
+      <object>objects\obj_green_bottle</object>
       <object>objects\obj_sqr_yel</object>
       <object>objects\obj_weak</object>
       <object>objects\obj_lift</object>
       <object>objects\obj_forcer_up</object>
       <object>objects\obj_sphere</object>
+      <object>objects\obj_apple</object>
     </objects>
     <objects name="tiles">
       <object>objects\obj_tile_parent</object>

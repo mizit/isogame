@@ -4,6 +4,10 @@ with (obj_sqr_parent)
 {
     instance_destroy();
 }
+with (obj_tile_parent)
+{
+    instance_destroy();
+}
 instance_destroy(obj_general);
 instance_create(0, 0, obj_general);
 

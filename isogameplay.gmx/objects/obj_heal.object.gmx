@@ -26,7 +26,11 @@
           <argument>
             <kind>1</kind>
             <string> event_inherited();
- content = SKILL.HEAL;
+ //content = SKILL.HEAL;
+ local_magick = 6;
+ ds_list_add(content_list, content_create(CONTENT_TYPE.SKILL, SKILL.HEAL));
+ ds_list_add(content_list, content_create(CONTENT_TYPE.BUFF, 
+   buff_create("magick reload", buff_getting_heal, buff_magick_restore, noone, local_magick / 0.1, BUFF_FLAG.POSITIVE | BUFF_FLAG.UNIQUE)));
  set_shadow(s_noone_shadow);
 </string>
           </argument>

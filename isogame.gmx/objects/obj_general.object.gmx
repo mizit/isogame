@@ -50,7 +50,6 @@ for (var i = 0; i &lt; ds_list_size(list_pos_tile); i++)
     tmp.gz = noone;
 }
 
-
 cursor_state = 0;
 enum CURSOR_STATE{
     FREE = 0,
@@ -574,7 +573,7 @@ for (var i = 0; i &lt; ds_list_size(list_set_obj); i++)
 }
 
  draw_text(100, 100, "fps: " + string(fps_real));
- draw_text(100, 140, "ASPECT: " + string(ASPECT));
+ draw_text(100, 140, "Tiles: " + string(instance_number(obj_tile_parent)));
 </string>
           </argument>
         </arguments>
