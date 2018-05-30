@@ -29,7 +29,8 @@
  event_inherited();
  //content = SKILL.KNIFE;
  ds_list_add(content_list, content_create(CONTENT_TYPE.SKILL, SKILL.KNIFE));
- set_shadow(s_noone_shadow);
+ //set_shadow(s_noone_shadow);
+ //set_shadow(noone);
 </string>
           </argument>
         </arguments>

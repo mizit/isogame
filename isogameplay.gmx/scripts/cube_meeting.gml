@@ -1,9 +1,14 @@
-///cube_meeting(id1, x, y, z, id2);
-var l_cube1 = argument0;
-var l_x = argument1;
-var l_y = argument2;
-var l_z = argument3;
-var l_cube2 = argument4;
+///cube_meeting(x, y, z, obj);
+var l_cube1 = id;
+var l_x = argument0;
+var l_y = argument1;
+var l_z = argument2;
+var l_cube2 = argument3;
+
+if !(l_cube1.physics_on && l_cube2.physics_on)
+{
+    return false;
+}
 
 var l_x1, l_x2, l_y1, l_y2, l_z1, l_z2;
 l_x1 = l_x + l_cube1.length / 2;

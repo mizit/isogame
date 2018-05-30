@@ -38,6 +38,8 @@ enum DIRECTION
 my_dir = DIRECTION.RIGHT;
 image_speed = 0;
 gspeed = 0;
+damage = 0;
+physics_on = 0;
 set_shadow(s_small_shadow);
 </string>
           </argument>
@@ -90,6 +92,8 @@ set_shadow(s_small_shadow);
     ds_list_delete_value(obj_general.list_all, id);
     instance_destroy();
 }
+
+
 </string>
           </argument>
         </arguments>

@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-200</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,9 +25,30 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>selected = noone;
+            <string>if(!DEBUG)
+{
+    instance_destroy();
+}
 gspeed = 0.1;
+origin_speed = 1;
+size_speed = 0.1;
+IND = 0;
+selected = -1;
+layers_select = 3;
+is_collision = 0;
+list = noone;
+mode_moving = 1; //mode 0 - resize object, 1 - move object
 
+globalvar A1,A2,A3,A4,B1,B2,B3,B4;
+A1 = 0;
+A2 = 0;
+A3 = 0;
+A4 = 0;
+B1 = 0;
+B2 = 0;
+B3 = 0;
+B4 = 0;
+  
 </string>
           </argument>
         </arguments>
@@ -50,48 +71,62 @@ gspeed = 0.1;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (keyboard_check_pressed(ord('1')) &amp;&amp; instance_exists(obj_sqr_big_r))
+            <string>list = obj_general.list_all;
+if (keyboard_check_pressed(vk_tab))
 {
-    selected = obj_sqr_big_r;
+    mode_moving ^= 1;
 }
-if (keyboard_check_pressed(ord('2')) &amp;&amp; instance_exists(obj_sqr_big_g))
+if (selected == -1) 
 {
-    selected = obj_sqr_big_g;
+    exit;
 }
-if (keyboard_check_pressed(ord('3')) &amp;&amp; instance_exists(obj_sqr_big_b))
-{
-    selected = obj_sqr_big_b;
-}
+
 if (!instance_exists(selected))
 {
-    selected = noone;
+    selected = -1;
 }
 else
 {
-    with (selected)
+    with(selected)
     {
-        var oldx, oldy, oldz;
-        oldx = gx;
-        oldy = gy;
-        oldz = gz;
-        gx += (keyboard_check(ord('D')) - keyboard_check(ord('S'))) * other.gspeed;
-        gy += (keyboard_check(ord('X')) - keyboard_check(ord('E'))) * other.gspeed;
-        gz += (keyboard_check(vk_up) - keyboard_check(vk_down)) * other.gspeed;
-        for (var i = 0; i &lt; instance_number(obj_sqr_parent); i++)
+        if (other.mode_moving)
+        {
+            gx += (keyboard_check(ord('D')) - keyboard_check(ord('S'))) * other.gspeed;
+            gy += (keyboard_check(ord('X')) - keyboard_check(ord('E'))) * other.gspeed;
+            gz += (keyboard_check(vk_up) - keyboard_check(vk_down)) * other.gspeed;
+        }
+        else
+        {
+            length += (keyboard_check(ord('D')) - keyboard_check(ord('S'))) * other.size_speed;
+            width += (keyboard_check(ord('X')) - keyboard_check(ord('E'))) * other.size_speed;
+            height += (keyboard_check(vk_up) - keyboard_check(vk_down)) * other.size_speed;
+            length = max(0, length);
+            width = max(0, width);
+            height = max(0, height);
+            sqr_set_size(id, length, width, height);
+        }
+        sprite_set_offset(sprite_index,
+        sprite_xoffset + (keyboard_check(ord('J')) - keyboard_check(ord('K'))) * other.origin_speed,
+        sprite_yoffset + (keyboard_check(ord('I')) - keyboard_check(ord('M'))) * other.origin_speed);
+        if(gz &lt;= 0)
+        {
+            gz = 0;
+        }
+        other.is_collision = 0;
+        for(var i = 0; i &lt; instance_number(obj_sqr_parent); i++)
         {
             var tmp = instance_find(obj_sqr_parent, i);
-            if (tmp != id)
+            if(tmp != id)
             {
-                if (cube_collision(id, tmp))
+                if(cube_collision(id, tmp) == true)
                 {
-                    gx = oldx;
-                    gy = oldy;
-                    gz = oldz;
+                    other.is_collision = 1;
                 }
             }
         }
     }
 }
+ 
 </string>
           </argument>
         </arguments>
@@ -114,9 +149,162 @@ else
         <arguments>
           <argument>
             <kind>1</kind>
-            <string> 
- //draw_text(150, 50, "selezione: " + string(selected));
- draw_text(150, 50, "selezione: " + string(object_get_name(selected)));
+            <string> var RIG = 8;       //draw_y1
+ var RIG1 = 8;      //draw_y2
+ var delta_y = 12;
+ var draw_x = 700;
+ /*draw_set_color(c_red); 
+ 
+ draw_text(240, RIG1, "N EROE: " + string(instance_number(EROE)));
+ RIG1 += 16;
+ draw_set_color(c_blue); 
+ draw_text(240, RIG1, "N BLU_82: " + string(instance_number(BLU_82)));
+ RIG1 += 16;
+ draw_set_color(c_red); 
+ draw_text(240, RIG1, "t1: " + string(t1));*/
+
+ 
+if(selected &gt; -1)
+{
+    draw_set_color(c_green);
+    if(!instance_exists(selected)) 
+    {
+        exit;
+    }
+    RIG = draw_text_list(draw_x, RIG, delta_y,
+    "selezione: " + object_get_name(selected.object_index),
+    "gy: " + string(selected.gy),
+    "gz: " + string(selected.gz),
+    "length: " + string(selected.length),
+    "width: " + string(selected.width),
+    "height: " + string(selected.height),
+    "xoffset: " + string(selected.sprite_xoffset),
+    "yoffset: " + string(selected.sprite_yoffset));
+    RIG += delta_y;
+    if (mode_moving)
+    {
+        draw_text(draw_x, RIG, "mode: moving");
+    }
+    else
+    {
+        draw_text(draw_x, RIG, "mode: resize");
+    }
+    
+    draw_set_colour(c_fuchsia);
+    draw_debug(selected);
+  /*RIG += 12;
+  draw_text(100, RIG, "LEN: " + string(selected.LEN));
+  RIG += 12;
+  draw_text(100, RIG, "WID: " + string(selected.WID));
+  RIG += 12;
+  draw_text(100, RIG, "HEI: " + string(selected.HEI));
+  RIG += 12;
+  draw_text(100, RIG, "XO: " + string(selected.XO));
+  RIG += 12;
+  draw_text(100, RIG, "YO: " + string(selected.YO));
+  RIG += 12;
+  draw_text(100, RIG, "NUMB: " + string(obj_general.NUMB));*/
+} 
+
+/*
+if(instance_exists(t1))
+{
+    with(t1)
+    {
+        draw_text(300, 500, "XO: " + string(sprite_get_xoffset(t1)));
+        draw_text(300, 530, "XO: " + string(sprite_get_yoffset(t1)));
+    } 
+}  */
+ 
+RIG += delta_y;
+RIG = draw_text_list(draw_x, RIG, delta_y, 
+"A1: " + string(A1),
+"B1: " + string(A2),
+"A1: " + string(A3),
+"B1: " + string(A4));
+RIG += delta_y;
+RIG = draw_text_list(draw_x, RIG, delta_y,
+"A1: " + string(B1), 
+"B1: " + string(B2),
+"A1: " + string(B3),
+"B1: " + string(B4));
+
+if (is_collision)
+{
+    RIG += delta_y;
+    draw_set_color(c_red);
+    draw_text(draw_x, RIG, "collision");
+}
+ 
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="17">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>IND -= 1;
+if(IND &lt; 0)
+{
+    IND = ds_list_size(list) - 1;
+}
+selected = list[| IND];
+ 
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="9" enumb="16">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>IND += 1;
+if (IND &gt;= ds_list_size(list))
+{
+    IND = 0;
+}
+selected = list[| IND];
+if(!instance_exists(selected))
+{
+    show_message("Non esiste !");
+}
+/*else
+{
+    with(selected)
+    {
+        sqr_set_size(id, length, width, height);
+    }
+}*/
 </string>
           </argument>
         </arguments>

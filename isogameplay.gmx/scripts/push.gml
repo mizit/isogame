@@ -3,6 +3,7 @@
 var l_obj = argument0;
 var l_dx = argument1;
 var l_dy = argument2;
+
 enum RET
 {
     X = 1,

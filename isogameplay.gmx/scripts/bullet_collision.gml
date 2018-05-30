@@ -43,6 +43,8 @@ if (abs(l_x2 - l_x1) < ((l_b_length + l_cube.length) / 2)) &&
     (abs(l_y2 - l_y1) < ((l_b_width + l_cube.width) / 2)) &&
     (abs(l_z2 - l_z1) < ((l_bullet.height + l_cube.height) / 2))
 {
+    ds_list_add(l_cube.collision_list, l_bullet);
+    ds_list_add(l_bullet.collision_list, l_cube);
     return true;
 }
 return false;

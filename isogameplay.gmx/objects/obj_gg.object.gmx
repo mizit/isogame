@@ -100,6 +100,29 @@ magick_step = 32;
           <argument>
             <kind>1</kind>
             <string>event_inherited();
+
+/*var enemy = enemy_meeting();
+if (enemy != noone)
+{
+    hero_get_damage(enemy.damage);
+}*/
+for (var i = 0; i &lt; ds_list_size(collision_list); i++)
+{
+    var c_obj = collision_list[| i];
+    if (instance_exists(c_obj))
+    {
+        if (object_is_ancestor(c_obj.object_index, obj_enemy))
+        {
+            hero_get_damage(c_obj.damage);
+        }
+    }
+}
+
+if (DEBUG)
+{
+    exit;
+}
+
 push_3d(id, (keyboard_check(key_right) - keyboard_check(key_left)) * other.gspeed,
 (keyboard_check(key_down) - keyboard_check(key_up)) * other.gspeed, 0);
 

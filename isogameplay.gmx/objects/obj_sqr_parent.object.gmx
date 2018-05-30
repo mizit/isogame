@@ -48,7 +48,10 @@ area_surf_mask = noone;
 set_shadow(shadow_sprite);
 alarm[0] = 1;
 
+physics_on = 1;
+
 buff_list = ds_list_create();
+collision_list = ds_list_create();
 </string>
           </argument>
         </arguments>
@@ -80,6 +83,7 @@ for (var i = 0; i &lt; ds_list_size(buff_list); i++)
     ds_list_destroy(buff_list[| i]);
 }
 ds_list_destroy(buff_list);
+ds_list_destroy(collision_list);
 </string>
           </argument>
         </arguments>
@@ -139,6 +143,29 @@ ds_list_destroy(buff_list);
         ds_list_destroy(tmp_buff);
     }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="73">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>ds_list_clear(collision_list);
 </string>
           </argument>
         </arguments>

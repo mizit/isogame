@@ -25,7 +25,15 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>list_solid = ds_list_create();    
+            <string>/*if (window_get_fullscreen())
+{
+    view_hport = display_get_height();
+    view_wport = display_get_width();
+    view_hview = view_hport;
+    view_wview = view_wport;
+}*/
+
+list_solid = ds_list_create();    
 list_move = ds_list_create();    
 list_all = ds_list_create();
 list_tile = ds_list_create();
@@ -75,14 +83,13 @@ path_sqr.pusher = 1;
 path_sqr.cycled = 1;
 ds_list_add(list_move, path_sqr);
 
-path_sqr = instance_create(0, 0, obj_weak);
-path_sqr.gx = 6;
-path_sqr.gy = 2;
-path_sqr.gz = 0;
-path_sqr.gspeed = 0.1;
-path_sqr.cycled = 1;
-cube_path_width(path_sqr, 8);
-ds_list_add(list_move, path_sqr);
+ghost = instance_create(0, 0, obj_ghost);
+ghost.gx = 6;
+ghost.gy = 2;
+ghost.gz = 0;
+ghost.cycled = 1;
+cube_path_width(ghost, 8);
+ds_list_add(list_move, ghost);
 
 forcer = instance_create(0, 0, obj_forcer_up);
 forcer.gx = 1;
@@ -107,7 +114,7 @@ apple.gy = 9;
 apple.gz = 0;
 ds_list_add(list_solid, apple);
 
-bottle = instance_create(0, 0, obj_green_bottle);
+/*bottle = instance_create(0, 0, obj_green_bottle);
 bottle.gx = 5;
 bottle.gy = 12;
 bottle.gz = 0;
@@ -116,7 +123,7 @@ bottle = instance_create(0, 0, obj_blue_bottle);
 bottle.gx = 5;
 bottle.gy = 13;
 bottle.gz = 0;
-ds_list_add(list_solid, bottle);
+ds_list_add(list_solid, bottle);*/
 
 ANGO = 45;
 
@@ -221,7 +228,7 @@ for (var i = 0; i &lt; ds_list_size(list_all) - 1; i++)
         if (abs(A.gx - B.gx) &lt;= (max(A.shadow_rbx, B.shadow_rbx) / TCELLSIZETOX)) &amp;&amp;
         (abs(A.gy - B.gy) &lt;= (max(A.shadow_rby, B.shadow_rby) * 2 / TCELLSIZETOZ))
         {
-            if (A.gz + A.height &lt;= B.gz)
+            if (A.gz + A.height &lt;= B.gz) &amp;&amp; (surface_exists(B.shadow_surf)) &amp;&amp; (surface_exists(A.area_surf))
             {
                 surface_set_target(A.area_surf);
                 draw_surface(B.shadow_surf,
@@ -235,7 +242,7 @@ for (var i = 0; i &lt; ds_list_size(list_all) - 1; i++)
                 + (B.width + B.length - 2) * TCELLSIZETOZ / 2));
                 surface_reset_target();
             }
-            if (B.gz + B.height &lt;= A.gz)
+            if (B.gz + B.height &lt;= A.gz) &amp;&amp; (surface_exists(B.area_surf)) &amp;&amp; (surface_exists(A.shadow_surf))
             {
                 surface_set_target(B.area_surf);
                 draw_surface(A.shadow_surf,
@@ -253,38 +260,44 @@ for (var i = 0; i &lt; ds_list_size(list_all) - 1; i++)
     }
     with (list_all[| i])
     {
-        surface_set_target(area_surf);
-        draw_set_blend_mode(bm_subtract);
-        draw_surface(area_surf_mask, 0, 0);
-        draw_set_blend_mode(bm_normal);
-        surface_reset_target();
+        if (surface_exists(area_surf) &amp;&amp; surface_exists(area_surf_mask))
+        {
+            surface_set_target(area_surf);
+            draw_set_blend_mode(bm_subtract);
+            draw_surface(area_surf_mask, 0, 0);
+            draw_set_blend_mode(bm_normal);
+            surface_reset_target();
+        }
     }
     
 }
 
 ds_list_d3_surfaces(list_all);
 
-surface_clear(shadow_surf);
-surface_set_target(shadow_surf);
-for (var i = 0; i &lt; ds_list_size(list_all); i++)
+if (surface_exists(shadow_surf))
 {
-    var obj = list_all[| i];
-    /*draw_circle((obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE,
-    (obj.gx + obj.gy) * TCELLSIZETOZ / 2 + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2,
-    5, 0);*/
-    with (obj)
+    surface_clear(shadow_surf);
+    surface_set_target(shadow_surf);
+    for (var i = 0; i &lt; ds_list_size(list_all); i++)
     {
-        if (visible)
+        var obj = list_all[| i];
+        /*draw_circle((obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE,
+        (obj.gx + obj.gy) * TCELLSIZETOZ / 2 + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2,
+        5, 0);*/
+        with (obj)
         {
-            draw_surface(shadow_surf, (gx - gy) * TCELLSIZETOX + (length - width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE - shadow_xoffset,
-            (gx + gy) * TCELLSIZETOZ / 2 + (width + length - 2) * TCELLSIZETOZ / 2 - shadow_yoffset);
+            if ((visible) &amp;&amp; (surface_exists(shadow_surf)))
+            {
+                draw_surface(shadow_surf, (gx - gy) * TCELLSIZETOX + (length - width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE - shadow_xoffset,
+                (gx + gy) * TCELLSIZETOZ / 2 + (width + length - 2) * TCELLSIZETOZ / 2 - shadow_yoffset);
+            }
         }
     }
+    draw_set_blend_mode(bm_subtract);
+    draw_surface(shadow_surf_mask, 0, 0);
+    draw_set_blend_mode(bm_normal);
+    surface_reset_target();
 }
-draw_set_blend_mode(bm_subtract);
-draw_surface(shadow_surf_mask, 0, 0);
-draw_set_blend_mode(bm_normal);
-surface_reset_target();
 </string>
           </argument>
         </arguments>
@@ -378,9 +391,7 @@ for (var i = 0; i &lt; ds_list_size(list_all); i++)
     {
         if (surface_exists(obj.surf))
         {
-            draw_surface(obj.surf, 
-            round(-obj.sprite_xoffset + d3_x + (obj.gx - obj.gy) * TCELLSIZETOX),
-            round(-obj.sprite_yoffset + d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT));
+            draw_surface(obj.surf, get_2d_x(obj), get_2d_y(obj));
         }
         draw_set_alpha(shadow_alpha);
         if (surface_exists(obj.area_surf))
@@ -399,49 +410,15 @@ if (debug_on)
     draw_set_colour(c_red);
     for (var i = 0; i &lt; ds_list_size(list_all); i++)
     {
-        var obj = list_all[| i];
-        
-        var fbx, fby, ftx, fty;
-
-        fbx = d3_x + (obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX;
-        fby = d3_y + (obj.gx + obj.gy) * TCELLSIZETOZ / 2 - obj.gz * TCELLHIGHT +
-            (obj.width + obj.length - 2) * TCELLSIZETOZ / 2;
-            
-        ftx = fbx;
-        fty = fby - TCELLHIGHT * obj.height;
-        
-        var lbx, lby, ltx, lty;
-        lbx = fbx - TCELLSIZETOX * obj.length;
-        ltx = lbx;
-        lby = fby - obj.length * TCELLSIZETOZ / 2;
-        lty = lby - TCELLHIGHT * obj.height;
-        
-        var rbx, rby, rtx, rty;
-        rbx = fbx + TCELLSIZETOX * obj.width;
-        rtx = rbx;
-        rby = fby - obj.width * TCELLSIZETOZ / 2;
-        rty = rby - TCELLHIGHT * obj.height;
-        
-        var btx, bty;
-        btx = ftx + (obj.width - obj.length) * TCELLSIZETOX;
-        bty = fty - (obj.width + obj.length) * TCELLSIZETOZ / 2;
-        
-        draw_line(fbx, fby, ftx, fty);
-        draw_line(lbx, lby, ltx, lty);
-        draw_line(fbx, fby, lbx, lby);
-        draw_line(ltx, lty, ftx, fty);
-        draw_line(rbx, rby, rtx, rty);
-        draw_line(fbx, fby, rbx, rby);
-        draw_line(rtx, rty, ftx, fty);
-        draw_line(ltx, lty, btx, bty);
-        draw_line(rtx, rty, btx, bty);
+        draw_debug(list_all[| i]);
     }
 }
 
  draw_text(100, 100, "fps: " + string(fps_real));
  draw_text(100, 125, "GG gy: " + string(obj_gg.gy));
- draw_text(100, 150, "weak gy: " + string(obj_weak.gy));
- draw_text(100, 175, "difference: " + string(obj_weak.gy - obj_gg.gy));
+ draw_text(200, 100, "d3_x: " + string(d3_x));
+ //draw_text(100, 150, "ghost gz: " + string(obj_ghost.gz));
+ //draw_text(100, 175, "difference: " + string(obj_weak.gy - obj_gg.gy));
 </string>
           </argument>
         </arguments>

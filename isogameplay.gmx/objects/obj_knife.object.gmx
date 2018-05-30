@@ -30,6 +30,7 @@ gspeed = 2;
 length = 0.5;
 width = 0.5;
 height = 0.5;
+damage = 1;
 </string>
           </argument>
         </arguments>

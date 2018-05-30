@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (cube_meeting(id, gx, gy, gz + 0.1, obj_gg))
+            <string>if (cube_meeting(gx, gy, gz + 0.1, obj_gg))
 {
     visible = 0;
 }

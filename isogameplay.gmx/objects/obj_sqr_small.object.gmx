@@ -28,6 +28,7 @@
             <string> event_inherited();
  sqr_set_size(id, length, width, height);
  color = c_blue;
+ set_shadow(shadow_sprite);
 </string>
           </argument>
         </arguments>

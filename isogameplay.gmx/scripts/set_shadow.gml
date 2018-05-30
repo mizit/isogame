@@ -13,7 +13,7 @@ if (surface_exists(area_surf_mask))
 {
     surface_free(area_surf_mask);
 }
-    
+
 if (!sprite_exists(l_sprite))
 {
     shadow_ltx = 0;
@@ -24,6 +24,7 @@ if (!sprite_exists(l_sprite))
     shadow_yoffset = shadow_rby;
     
     shadow_surf = surface_create(shadow_rbx, shadow_rby);
+    surface_clear(shadow_surf);
     
     surface_set_target(shadow_surf);
     draw_set_colour(c_black);
@@ -38,6 +39,16 @@ if (!sprite_exists(l_sprite))
 }
 else
 {
+    if (l_sprite == s_noone_shadow)
+    {
+        shadow_ltx = 0;
+        shadow_lty = 0;
+        shadow_rbx = 0;
+        shadow_rby = 0;
+        shadow_xoffset = 0;
+        shadow_yoffset = 0;
+        return 0;
+    }
     shadow_ltx = 0;
     shadow_lty = 0;
     shadow_rbx = sprite_get_width(l_sprite);
