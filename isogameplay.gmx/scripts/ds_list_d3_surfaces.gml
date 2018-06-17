@@ -10,15 +10,20 @@ for (var i = 0; i < ds_list_size(l_list); i++)
     draw_sprite(A.sprite_index, A.image_index, A.sprite_xoffset, A.sprite_yoffset);
     surface_reset_target();
 }
-
+var cnt = 0;
 for (var i = 0; i < ds_list_size(l_list); i++)
 {
-    for (var j = 0; j < ds_list_size(l_list); j++)
+    for (var j = 0; j < i/*ds_list_size(l_list)*/; j++)
     {
         var A = l_list[| i];
         var B = l_list[| j];
-        if ((A.gx + A.length) <= B.gx) || ((A.gy + A.width) <= B.gy) || ((A.gz + A.height) <= B.gz)
+        if ((abs((A.gx - A.gy) - (B.gx - B.gy)) < ((A.width + A.length) + (B.width + B.length)))  &&  
+        ((B.gx + B.gy) / 2 + B.height + B.gz > (A.gx + A.gy + A.width + A.length) / 2) &&
+        (((A.gx + A.length) <= B.gx)  || 
+        ((A.gy + A.width) <= B.gy) || 
+        ((A.gz + A.height) <= B.gz)))
         {
+        cnt++;
             var ax, bx, ay, by;
             ax = get_2d_x(A);
             bx = get_2d_x(B);
@@ -48,3 +53,4 @@ for (var i = 0; i < ds_list_size(l_list); i++)
         }
     }
 }
+show_message(cnt);

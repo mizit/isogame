@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>
  event_inherited();
- sqr_set_size(id, length, width, height);
+ sqr_set_size(id, length, width, 3);
  color = c_blue;
 </string>
           </argument>

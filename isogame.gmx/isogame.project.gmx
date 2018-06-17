@@ -23,6 +23,8 @@
     <sprite>sprites\s_stg_place</sprite>
     <sprite>sprites\s_stg_plane</sprite>
     <sprite>sprites\sCUBO_0</sprite>
+    <sprite>sprites\s_brick</sprite>
+    <sprite>sprites\s_portal</sprite>
     <sprite>sprites\sCUBO_1</sprite>
     <sprite>sprites\sCUBO_3</sprite>
     <sprite>sprites\sGREEN_82</sprite>
@@ -64,6 +66,8 @@
       <objects name="squares">
         <object>objects\obj_sqr_parent</object>
         <object>objects\obj_sqr_small</object>
+        <object>objects\obj_brick</object>
+        <object>objects\obj_portal</object>
         <object>objects\obj_g_dagger</object>
         <object>objects\obj_stump</object>
         <object>objects\obj_wall</object>

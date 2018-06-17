@@ -93,6 +93,7 @@
     <sprite>sprites\s_ghost_down</sprite>
     <sprite>sprites\s_ghost_up</sprite>
     <sprite>sprites\s_buff_indestructible</sprite>
+    <sprite>sprites\s_brick</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -156,6 +157,7 @@
     <script>scripts\death_easy.gml</script>
     <script>scripts\draw_text_list.gml</script>
     <script>scripts\draw_debug.gml</script>
+    <script>scripts\is_decor.gml</script>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
@@ -163,6 +165,7 @@
       <object>objects\obj_sqr_parent</object>
       <object>objects\obj_solid</object>
       <object>objects\obj_move</object>
+      <object>objects\obj_door_parent</object>
       <object>objects\obj_pick_up</object>
       <object>objects\obj_sqr_path</object>
       <object>objects\obj_bullet</object>
@@ -170,6 +173,7 @@
       <object>objects\obj_invisible</object>
       <object>objects\obj_enemy</object>
       <object>objects\obj_sqr_small</object>
+      <object>objects\obj_brick</object>
       <object>objects\obj_sqr_tall</object>
       <object>objects\obj_sqr_big_b</object>
       <object>objects\obj_sqr_big_g</object>
@@ -192,6 +196,7 @@
       <object>objects\obj_sphere</object>
       <object>objects\obj_apple</object>
       <object>objects\obj_ghost</object>
+      <object>objects\obj_portal1</object>
     </objects>
     <objects name="tiles">
       <object>objects\obj_tile_parent</object>
@@ -209,7 +214,7 @@
   </rooms>
   <constants number="2">
     <constant name="GLOBAL_GRAVITY">0.1</constant>
-    <constant name="DEBUG">1</constant>
+    <constant name="DEBUG">0</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>

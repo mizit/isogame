@@ -40,7 +40,7 @@ list_tile = ds_list_create();
 floor_grid = ds_grid_create(TMAPSIZE, TMAPSIZE);
 ds_grid_set_region(floor_grid, 0, 0, TMAPSIZE, TMAPSIZE, noone);
 
-map_load("2000x2000");
+map_load(string(room_x) + "x" + string(room_y));
 
 gg = instance_create(0, 0, obj_gg);
 gg.gx = 5;
@@ -48,7 +48,7 @@ gg.gy = 6;
 gg.gz = 6;
 ds_list_add(list_move, gg);
 
-table = instance_create(0, 0, obj_table);
+/*table = instance_create(0, 0, obj_table);
 table.gx = 6;
 table.gy = 6;
 table.gz = 6;
@@ -112,7 +112,7 @@ apple = instance_create(0, 0, obj_apple);
 apple.gx = 3;
 apple.gy = 9;
 apple.gz = 0;
-ds_list_add(list_solid, apple);
+ds_list_add(list_solid, apple);*/
 
 /*bottle = instance_create(0, 0, obj_green_bottle);
 bottle.gx = 5;
@@ -281,9 +281,6 @@ if (surface_exists(shadow_surf))
     for (var i = 0; i &lt; ds_list_size(list_all); i++)
     {
         var obj = list_all[| i];
-        /*draw_circle((obj.gx - obj.gy) * TCELLSIZETOX + (obj.length - obj.width) * TCELLSIZETOX + TCELLSIZETOX * TMAPSIZE,
-        (obj.gx + obj.gy) * TCELLSIZETOZ / 2 + (obj.width + obj.length - 2) * TCELLSIZETOZ / 2,
-        5, 0);*/
         with (obj)
         {
             if ((visible) &amp;&amp; (surface_exists(shadow_surf)))

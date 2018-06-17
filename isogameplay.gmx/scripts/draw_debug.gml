@@ -2,6 +2,16 @@
 
 var arg_obj = argument0;
 
+if (is_decor(arg_obj))
+{
+    var lx, ly, rx, ry;
+    lx = obj_general.d3_x + (arg_obj.gx - arg_obj.gy) * TCELLSIZETOX - arg_obj.sprite_xoffset;
+    ly = obj_general.d3_y + (arg_obj.gx + arg_obj.gy) * TCELLSIZETOZ / 2 - arg_obj.sprite_yoffset;
+    rx = lx + arg_obj.sprite_width;
+    ry = ly + arg_obj.sprite_height;
+    draw_rectangle(lx, ly, rx, ry, 1);
+    return 0;
+}
 var fbx, fby, ftx, fty;
 
 fbx = obj_general.d3_x + (arg_obj.gx - arg_obj.gy) * TCELLSIZETOX + (arg_obj.length - arg_obj.width) * TCELLSIZETOX;

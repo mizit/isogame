@@ -26,8 +26,8 @@ globalvar TCELLSIZETOX;
 TCELLSIZETOX = 20;
 
 globalvar room_x, room_y;
-room_x = noone;
-room_y = noone;
+room_x = 2000;
+room_y = 2000;
 room_goto_next();</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
