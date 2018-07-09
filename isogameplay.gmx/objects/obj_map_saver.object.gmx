@@ -26,6 +26,7 @@
           <argument>
             <kind>1</kind>
             <string>list = global_map_load();
+
 </string>
           </argument>
         </arguments>

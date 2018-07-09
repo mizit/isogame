@@ -191,7 +191,19 @@ if (keyboard_check_pressed(key_magick))
         <arguments>
           <argument>
             <kind>1</kind>
-            <string></string>
+            <string>///set marker of arrived
+
+var map_list = obj_map_saver.list;
+
+for (var i = 0; i &lt; ds_list_size(map_list); i++)
+{
+    var tile = map_list[| i];
+    if ((tile[| MAP_TILE.X] == room_x) &amp;&amp; (tile[| MAP_TILE.Y] == room_y))
+    {
+        tile[| MAP_TILE.COLOUR] = c_green;
+    }
+}
+</string>
           </argument>
         </arguments>
       </action>

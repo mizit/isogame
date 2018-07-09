@@ -34,13 +34,19 @@ surface_set_target(map_surf);
 draw_set_color(c_black);
 draw_rectangle(0, 0, image_width, image_height, 0);
 surface_reset_target();
+instance_activate_object(obj_map_saver);
 if (!instance_exists(obj_map_saver))
 {
     instance_create(0, 0, obj_map_saver);
 }
 scale = 5;
+scale_step = 0.1;
+scale_max = 10;
+scale_min = 1;
 center_x = image_width / 2;
 center_y = image_height / 2;
+fix_x = 0;
+fix_y = 0;
 </string>
           </argument>
         </arguments>
@@ -70,6 +76,48 @@ surface_free(map_surf);
         </arguments>
       </action>
     </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if (mouse_check_button_pressed(mb_right))
+{
+    fix_x = display_mouse_get_x();
+    fix_y = display_mouse_get_y();
+}
+if (mouse_check_button(mb_right))
+{
+    center_x += (display_mouse_get_x() - fix_x);
+    center_y += (display_mouse_get_y() - fix_y);
+    fix_x = display_mouse_get_x();
+    fix_y = display_mouse_get_y();
+}
+if (mouse_wheel_up())
+{
+    scale = max(scale_min, scale * (1 - scale_step));
+}
+if (mouse_wheel_down())
+{
+    scale = min(scale_max, scale * (1 + scale_step));
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="0">
       <action>
         <libid>1</libid>
@@ -90,18 +138,26 @@ surface_free(map_surf);
             <string>event_inherited();
 draw_surface(map_surf, 0, 0);
 draw_set_colour(c_red);
-//draw_map_tile(image_width / 2, image_height / 2, 5);
 var map_list = obj_map_saver.list;
+
+///draw tiles
 for (var map_ind = 0; map_ind &lt; ds_list_size(map_list); map_ind++)
 {
     var map = map_list[| map_ind];
     draw_map_tile(map);
 }
+///draw doors
 for (var map_ind = 0; map_ind &lt; ds_list_size(map_list); map_ind++)
 {
     var map = map_list[| map_ind];
     draw_map_doors(map);
 }
+///draw hero mark
+///ATTENTION - magick numbers
+var base_coord = 2000;
+var drawing_x = center_x + (room_x - room_y) * TCELLSIZETOX * scale;
+var drawing_y = center_y + (- base_coord * 2 + room_y + room_x - 0.5) * TCELLSIZETOZ / 2 * scale;
+draw_sprite_ext(s_gg, -1, drawing_x, drawing_y, 0.2 * scale, 0.2 * scale, 0, c_white, 1);
 </string>
           </argument>
         </arguments>
