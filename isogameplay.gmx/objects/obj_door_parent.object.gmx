@@ -64,7 +64,7 @@ if (goal != noone)
     if (cube_collision(id, obj_gg))
     {
         hero_appears = appears;
-        hero_to_tmp();
+        //hero_to_tmp();
         room_string_parse(goal);
         room_restart();
     }

@@ -43,7 +43,14 @@ ds_grid_set_region(floor_grid, 0, 0, TMAPSIZE, TMAPSIZE, noone);
 //show_message(string(room_x) + "x" + string(room_y));
 map_load(string(room_x) + "x" + string(room_y));
 
-gg = instance_create(0, 0, obj_gg);
+if (!instance_exists(obj_gg))
+{
+    gg = instance_create(0, 0, obj_gg);
+}
+else
+{
+    gg = instance_find(obj_gg, 0);
+}
 hero_appearing(gg);
 ds_list_add(list_move, gg);
 
