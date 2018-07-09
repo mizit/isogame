@@ -90,20 +90,20 @@ if (!instance_position(x + stepx, y + stepy, object_index) &amp;&amp;
 {
     tmp = instance_create(x + stepx, y + stepy, obj_plane);
     tmp.stg_x = stg_x + 1;
-    tmp.stg_y = stg_y + 1;
+    tmp.stg_y = stg_y;
 }
 if (!instance_position(x + stepx, y - stepy, object_index) &amp;&amp;
 !instance_position(x + stepx, y - stepy, obj_stg_place_plane))
 {
     tmp = instance_create(x + stepx, y - stepy, obj_plane);
-    tmp.stg_x = stg_x + 1;
+    tmp.stg_x = stg_x;
     tmp.stg_y = stg_y - 1;
 }
 if (!instance_position(x - stepx, y + stepy, object_index) &amp;&amp;
 !instance_position(x - stepx, y + stepy, obj_stg_place_plane))
 {
     tmp = instance_create(x - stepx, y + stepy, obj_plane);
-    tmp.stg_x = stg_x - 1;
+    tmp.stg_x = stg_x;
     tmp.stg_y = stg_y + 1;
 }
 if (!instance_position(x - stepx, y - stepy, object_index) &amp;&amp;
@@ -111,7 +111,7 @@ if (!instance_position(x - stepx, y - stepy, object_index) &amp;&amp;
 {
     tmp = instance_create(x - stepx, y - stepy, obj_plane);
     tmp.stg_x = stg_x - 1;
-    tmp.stg_y = stg_y - 1;
+    tmp.stg_y = stg_y;
 }
 depth = -stg_x - stg_y;
 

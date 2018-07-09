@@ -28,7 +28,11 @@ TCELLSIZETOX = 20;
 globalvar room_x, room_y;
 room_x = 2000;
 room_y = 2000;
-room_goto_next();</code>
+globalvar hero_appears;
+hero_appears = noone;
+room_goto_next();
+
+instance_create(0, 0, obj_map_saver);</code>
   <enableViews>0</enableViews>
   <clearViewBackground>-1</clearViewBackground>
   <clearDisplayBuffer>-1</clearDisplayBuffer>

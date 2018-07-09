@@ -22,7 +22,7 @@ for (var i = 0; i < l_obj_num; i++)
         tmp.gx = file_text_read_real(l_file);
         tmp.gy = file_text_read_real(l_file);
         tmp.gz = file_text_read_real(l_file) - 1;
-        if (object_is_ancestor(tmp.object_index, obj_solid) || object_is_ancestor(tmp.object_index, obj_pick_up))
+        if (object_is_ancestor(tmp.object_index, obj_solid) || object_is_ancestor(tmp.object_index, obj_non_physical))
         {
             ds_list_add(obj_general.list_solid, tmp);
         }

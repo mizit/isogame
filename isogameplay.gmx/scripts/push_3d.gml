@@ -24,9 +24,9 @@ with (l_obj)
         {
             var check_collision = 0;
             var minx = 10000;
-            for (var i = 0; i < instance_number(obj_sqr_parent); i++)
+            for (var i = 0; i < instance_number(obj_physical); i++)
             {
-                var tmp = instance_find(obj_sqr_parent, i);
+                var tmp = instance_find(obj_physical, i);
                 if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))
@@ -80,9 +80,9 @@ with (l_obj)
         else
         {
             var check_collision = 0;
-            for (var i = 0; i < instance_number(obj_sqr_parent); i++)
+            for (var i = 0; i < instance_number(obj_physical); i++)
             {
-                var tmp = instance_find(obj_sqr_parent, i);
+                var tmp = instance_find(obj_physical, i);
                 if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))
@@ -130,9 +130,9 @@ with (l_obj)
         else
         {
             var check_collision = 0;
-            for (var i = 0; i < instance_number(obj_sqr_parent); i++)
+            for (var i = 0; i < instance_number(obj_physical); i++)
             {
-                var tmp = instance_find(obj_sqr_parent, i);
+                var tmp = instance_find(obj_physical, i);
                 if (tmp != id) && (tmp != other)
                 {
                     if (cube_collision(id, tmp))

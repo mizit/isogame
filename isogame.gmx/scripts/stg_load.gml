@@ -10,8 +10,11 @@ for (var i = 0; i < num; i++)
     var ly = file_text_read_real(file);
     with (obj_stg_general)
     {
-        var tmp = instance_create(room_width / 2 + (lx - stg_null_point) * stepx,
-        room_height / 2 + (ly - stg_null_point) * stepy, obj_stg_place);
+        //var tmp = instance_create(room_width / 2 + (lx - stg_null_point) * stepx,
+        //room_height / 2 + (ly - stg_null_point) * stepy, obj_stg_place);
+        var l_sx = room_width / 2 + (lx - ly) * stepx;
+        var l_sy = room_height / 2 + (lx + ly - stg_null_point * 2) * stepy;
+        var tmp = instance_create(l_sx, l_sy, obj_stg_place);
         tmp.stg_x = lx;
         tmp.stg_y = ly;
     }

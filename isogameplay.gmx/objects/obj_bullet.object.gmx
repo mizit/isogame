@@ -135,7 +135,7 @@ if (my_dir == DIRECTION.DOWN)
 }
 
 var dead_test = 0;
-with (obj_sqr_parent)
+with (obj_physical)
 {
     if (id != other) &amp;&amp; (object_index != obj_gg)
     {

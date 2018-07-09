@@ -19,7 +19,7 @@
         <exetype>2</exetype>
         <functionname></functionname>
         <codestring></codestring>
-        <whoName>self</whoName>
+        <whoName>other</whoName>
         <relative>0</relative>
         <isnot>0</isnot>
         <arguments>
@@ -40,13 +40,13 @@ list_tile = ds_list_create();
 floor_grid = ds_grid_create(TMAPSIZE, TMAPSIZE);
 ds_grid_set_region(floor_grid, 0, 0, TMAPSIZE, TMAPSIZE, noone);
 
+//show_message(string(room_x) + "x" + string(room_y));
 map_load(string(room_x) + "x" + string(room_y));
 
 gg = instance_create(0, 0, obj_gg);
-gg.gx = 5;
-gg.gy = 6;
-gg.gz = 6;
+hero_appearing(gg);
 ds_list_add(list_move, gg);
+
 
 /*table = instance_create(0, 0, obj_table);
 table.gx = 6;
@@ -106,9 +106,9 @@ sphere = instance_create(0, 0, obj_sphere);
 sphere.gx = 3;
 sphere.gy = 8;
 sphere.gz = 0;
-ds_list_add(list_solid, sphere);
+ds_list_add(list_solid, sphere);*/
 
-apple = instance_create(0, 0, obj_apple);
+/*apple = instance_create(0, 0, obj_apple);
 apple.gx = 3;
 apple.gy = 9;
 apple.gz = 0;
@@ -158,6 +158,8 @@ for(var i = 0; i &lt; TMAPSIZE; i++)
 }
 draw_set_blend_mode(bm_normal);
 surface_reset_target();
+
+//door_auto_set();
 </string>
           </argument>
         </arguments>
@@ -414,6 +416,7 @@ if (debug_on)
  draw_text(100, 100, "fps: " + string(fps_real));
  draw_text(100, 125, "GG gy: " + string(obj_gg.gy));
  draw_text(200, 100, "d3_x: " + string(d3_x));
+ draw_text(200, 125, "Invisible walls: " + string(instance_number(obj_invisible_wall)));
  //draw_text(100, 150, "ghost gz: " + string(obj_ghost.gz));
  //draw_text(100, 175, "difference: " + string(obj_weak.gy - obj_gg.gy));
 </string>

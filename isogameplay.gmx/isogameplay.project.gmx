@@ -3,11 +3,79 @@
   <Configs name="configs">
     <Config>Configs\Default</Config>
   </Configs>
-  <datafiles number="10" name="datafiles">
+  <datafiles number="20" name="datafiles">
+    <datafile>
+      <name>1999x1999</name>
+      <exists>-1</exists>
+      <size>710</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>1999x1999</filename>
+    </datafile>
+    <datafile>
+      <name>1999x2000</name>
+      <exists>-1</exists>
+      <size>767</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>1999x2000</filename>
+    </datafile>
+    <datafile>
+      <name>1999x2001</name>
+      <exists>-1</exists>
+      <size>622</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>1999x2001</filename>
+    </datafile>
+    <datafile>
+      <name>2000x1999</name>
+      <exists>-1</exists>
+      <size>887</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>2000x1999</filename>
+    </datafile>
     <datafile>
       <name>2000x2000</name>
       <exists>-1</exists>
-      <size>1638</size>
+      <size>1916</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -22,9 +90,9 @@
       <filename>2000x2000</filename>
     </datafile>
     <datafile>
-      <name>2000x2002</name>
+      <name>2000x2001</name>
       <exists>-1</exists>
-      <size>639</size>
+      <size>801</size>
       <exportAction>2</exportAction>
       <exportDir></exportDir>
       <overwrite>0</overwrite>
@@ -36,7 +104,75 @@
           <CopyToMask>9223372036854775807</CopyToMask>
         </Config>
       </ConfigOptions>
-      <filename>2000x2002</filename>
+      <filename>2000x2001</filename>
+    </datafile>
+    <datafile>
+      <name>2001x1999</name>
+      <exists>-1</exists>
+      <size>704</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>2001x1999</filename>
+    </datafile>
+    <datafile>
+      <name>2001x2000</name>
+      <exists>-1</exists>
+      <size>733</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>2001x2000</filename>
+    </datafile>
+    <datafile>
+      <name>2001x2001</name>
+      <exists>-1</exists>
+      <size>630</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>2001x2001</filename>
+    </datafile>
+    <datafile>
+      <name>strategy.sav</name>
+      <exists>-1</exists>
+      <size>94</size>
+      <exportAction>2</exportAction>
+      <exportDir></exportDir>
+      <overwrite>0</overwrite>
+      <freeData>-1</freeData>
+      <removeEnd>0</removeEnd>
+      <store>0</store>
+      <ConfigOptions>
+        <Config name="Default">
+          <CopyToMask>9223372036854775807</CopyToMask>
+        </Config>
+      </ConfigOptions>
+      <filename>strategy.sav</filename>
     </datafile>
   </datafiles>
   <NewExtensions/>
@@ -94,12 +230,21 @@
     <sprite>sprites\s_ghost_up</sprite>
     <sprite>sprites\s_buff_indestructible</sprite>
     <sprite>sprites\s_brick</sprite>
+    <sprites name="portals">
+      <sprite>sprites\s_portal</sprite>
+      <sprite>sprites\s_portal_down</sprite>
+      <sprite>sprites\s_portal_left</sprite>
+      <sprite>sprites\s_portal_right</sprite>
+      <sprite>sprites\s_portal_up</sprite>
+      <sprite>sprites\s_map_portal</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\ds_list_delete_value.gml</script>
     <script>scripts\ds_list_d3_sort.gml</script>
+    <script>scripts\room_string_parse.gml</script>
     <script>scripts\map_load.gml</script>
     <script>scripts\sqr_set_size.gml</script>
     <script>scripts\ds_list_d3_sum.gml</script>
@@ -153,18 +298,42 @@
       <script>scripts\surface_clear.gml</script>
     </scripts>
     <script>scripts\hero_get_damage.gml</script>
+    <script>scripts\hero_to_tmp.gml</script>
+    <script>scripts\hero_from_tmp.gml</script>
+    <script>scripts\hero_appearing.gml</script>
     <script>scripts\enemy_get_damage.gml</script>
     <script>scripts\death_easy.gml</script>
     <script>scripts\draw_text_list.gml</script>
     <script>scripts\draw_debug.gml</script>
     <script>scripts\is_decor.gml</script>
+    <scripts name="doors define">
+      <script>scripts\door_auto_set.gml</script>
+      <script>scripts\door_sorted_list.gml</script>
+      <script>scripts\door_sort_left.gml</script>
+      <script>scripts\door_sort_right.gml</script>
+      <script>scripts\door_sort_top.gml</script>
+      <script>scripts\door_sort_bottom.gml</script>
+    </scripts>
+    <scripts name="map">
+      <script>scripts\draw_map_tile_coord.gml</script>
+      <script>scripts\global_map_load.gml</script>
+      <script>scripts\map_tile_create.gml</script>
+      <script>scripts\map_tile_set_ways.gml</script>
+      <script>scripts\map_tile_set_colour.gml</script>
+      <script>scripts\map_tile_add_way.gml</script>
+      <script>scripts\global_map_delete.gml</script>
+      <script>scripts\draw_map_tile.gml</script>
+      <script>scripts\draw_map_doors.gml</script>
+    </scripts>
   </scripts>
   <objects name="objects">
     <object>objects\obj_general</object>
     <objects name="squares">
       <object>objects\obj_sqr_parent</object>
+      <object>objects\obj_physical</object>
       <object>objects\obj_solid</object>
       <object>objects\obj_move</object>
+      <object>objects\obj_non_physical</object>
       <object>objects\obj_door_parent</object>
       <object>objects\obj_pick_up</object>
       <object>objects\obj_sqr_path</object>
@@ -196,7 +365,14 @@
       <object>objects\obj_sphere</object>
       <object>objects\obj_apple</object>
       <object>objects\obj_ghost</object>
-      <object>objects\obj_portal1</object>
+      <objects name="portals">
+        <object>objects\obj_portal</object>
+        <object>objects\obj_portal_up</object>
+        <object>objects\obj_portal_down</object>
+        <object>objects\obj_portal_left</object>
+        <object>objects\obj_portal_right</object>
+      </objects>
+      <object>objects\obj_gg_container</object>
     </objects>
     <objects name="tiles">
       <object>objects\obj_tile_parent</object>
@@ -207,6 +383,9 @@
       <object>objects\obj_wall_l</object>
     </objects>
     <object>objects\obj_motion_controller</object>
+    <object>objects\obj_pause</object>
+    <object>objects\obj_map_saver</object>
+    <object>objects\obj_map</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\r_generate</room>

@@ -24,7 +24,6 @@
     <sprite>sprites\s_stg_plane</sprite>
     <sprite>sprites\sCUBO_0</sprite>
     <sprite>sprites\s_brick</sprite>
-    <sprite>sprites\s_portal</sprite>
     <sprite>sprites\sCUBO_1</sprite>
     <sprite>sprites\sCUBO_3</sprite>
     <sprite>sprites\sGREEN_82</sprite>
@@ -38,6 +37,14 @@
     <sprite>sprites\s_wall_l</sprite>
     <sprite>sprites\s_g_dagger</sprite>
     <sprite>sprites\s_heal</sprite>
+    <sprites name="portals">
+      <sprite>sprites\s_portal</sprite>
+      <sprite>sprites\s_portal_up</sprite>
+      <sprite>sprites\s_portal_down</sprite>
+      <sprite>sprites\s_portal_left</sprite>
+      <sprite>sprites\s_portal_right</sprite>
+    </sprites>
+    <sprite>sprites\s_apple</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
@@ -67,7 +74,7 @@
         <object>objects\obj_sqr_parent</object>
         <object>objects\obj_sqr_small</object>
         <object>objects\obj_brick</object>
-        <object>objects\obj_portal</object>
+        <object>objects\obj_apple</object>
         <object>objects\obj_g_dagger</object>
         <object>objects\obj_stump</object>
         <object>objects\obj_wall</object>
@@ -90,6 +97,13 @@
         <object>objects\obj_tile3</object>
       </objects>
       <object>objects\obj_heal</object>
+      <objects name="portals">
+        <object>objects\obj_portal</object>
+        <object>objects\obj_portal_up</object>
+        <object>objects\obj_portal_down</object>
+        <object>objects\obj_portal_left</object>
+        <object>objects\obj_portal_right</object>
+      </objects>
     </objects>
   </objects>
   <rooms name="rooms">

@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>obj_sqr_parent</parentName>
+  <parentName>obj_physical</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -85,9 +85,9 @@ if (DEBUG)
 
 dgz -= grav;            //increment fall speed
 gz += dgz;              //falling
-for (var i = 0; i &lt; instance_number(obj_sqr_parent); i++)  //check every cube in room for collision
+for (var i = 0; i &lt; instance_number(obj_physical); i++)  //check every cube in room for collision
 {
-    var tmp = instance_find(obj_sqr_parent, i);
+    var tmp = instance_find(obj_physical, i);
     if (tmp != id)  //if cube is not the checking object
     {
         if (cube_collision(id, tmp))    //if we found collision

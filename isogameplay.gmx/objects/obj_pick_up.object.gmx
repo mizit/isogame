@@ -5,7 +5,7 @@
   <visible>-1</visible>
   <depth>0</depth>
   <persistent>0</persistent>
-  <parentName>&lt;undefined&gt;</parentName>
+  <parentName>obj_non_physical</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
     <event eventtype="0" enumb="0">
@@ -25,7 +25,8 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>length = 1;         //size in squares on x-coord
+            <string>event_inherited();
+/*length = 1;         //size in squares on x-coord
 width = 1;          //size in squares on y-coord
 height = 1;         //size in squares on z-coord
 gx = 0;             //grid x-coord 
@@ -50,7 +51,7 @@ shadow_lty = 0;
 shadow_rbx = 0;
 shadow_rby = 0;
 shadow_xoffset = 0;
-shadow_yoffset = 0;
+shadow_yoffset = 0;*/
 
 
 enum SKILL
@@ -164,7 +165,18 @@ ds_list_destroy(collision_list);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (cube_collision(id, obj_gg))
+            <string>var tmp_cont = content_list[| 0];
+if (tmp_cont[| CONTENT.TYPE] == CONTENT_TYPE.SKILL)
+{
+    if (tmp_cont[| CONTENT.CONT] &amp; obj_gg.skill)
+    {
+        ds_list_delete_value(obj_general.list_solid, id);
+        ds_list_delete_value(obj_general.list_all, id);
+        instance_destroy();
+        exit;
+    }
+}
+if (cube_collision(id, obj_gg))
 {
     while(ds_list_size(content_list) &gt; 0)
     {

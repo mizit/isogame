@@ -10,7 +10,7 @@ for (var i = 0; i < ds_list_size(l_list); i++)
     draw_sprite(A.sprite_index, A.image_index, A.sprite_xoffset, A.sprite_yoffset);
     surface_reset_target();
 }
-var cnt = 0;
+
 for (var i = 0; i < ds_list_size(l_list); i++)
 {
     for (var j = 0; j < i/*ds_list_size(l_list)*/; j++)
@@ -23,7 +23,6 @@ for (var i = 0; i < ds_list_size(l_list); i++)
         ((A.gy + A.width) <= B.gy) || 
         ((A.gz + A.height) <= B.gz)))
         {
-        cnt++;
             var ax, bx, ay, by;
             ax = get_2d_x(A);
             bx = get_2d_x(B);
@@ -53,4 +52,3 @@ for (var i = 0; i < ds_list_size(l_list); i++)
         }
     }
 }
-show_message(cnt);

@@ -1,0 +1,35 @@
+17 
+obj_sqr_small
+0 
+obj_sqr_tall
+0 
+obj_sqr_wide_left
+0 
+obj_sqr_wide_right
+0 
+obj_sqr_big_b
+0 
+obj_sqr_big_g
+0 
+obj_sqr_big_r
+0 
+obj_wall
+0 
+obj_wall_l
+0 
+obj_brick
+0 
+obj_portal_up
+1 7 0 1 
+obj_portal_down
+0 
+obj_portal_left
+0 
+obj_portal_right
+1 14 8 1 17 
+obj_tile1
+0 
+obj_tile2
+0 
+obj_tile3
+45 10 9 0 11 9 0 12 9 0 14 7 0 13 7 0 12 6 0 11 6 0 10 6 0 9 6 0 9 5 0 9 4 0 9 3 0 8 2 0 8 1 0 8 0 0 7 0 0 7 1 0 7 2 0 7 3 0 8 3 0 8 4 0 8 5 0 8 6 0 8 7 0 9 7 0 10 7 0 11 7 0 12 7 0 13 8 0 14 8 0 14 9 0 13 9 0 12 8 0 11 8 0 10 8 0 9 8 0 8 8 0 7 7 0 7 6 0 7 5 0 7 4 0 6 3 0 6 2 0 6 1 0 6 0 0 
